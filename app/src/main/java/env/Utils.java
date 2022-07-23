@@ -216,7 +216,7 @@ public class Utils {
         if (yMax + 5 <= originalHeight) yMax += 5;
         String testStr = "xMin: " + String.valueOf(xMin) + " yMin: " + String.valueOf(yMin) + " xMax: " + String.valueOf(xMax) + " yMax: " + String.valueOf(yMax);
         Log.d("debug",testStr); //debug
-        Bitmap croppedBitmap = Bitmap.createBitmap(originalImage, (int)xMin, (int)yMin, (int)xMax-(int)xMin, (int)yMax-(int)yMin);
+        Bitmap croppedBitmap = Bitmap.createBitmap(originalImage, (int)xMin, (int)yMin, (int)xMax-(int)xMin, (int)yMax-(int)yMin, null, true);
 
         return croppedBitmap;
     }

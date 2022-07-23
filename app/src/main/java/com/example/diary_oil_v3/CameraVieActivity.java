@@ -45,7 +45,7 @@ import tracking.MultiBoxTracker;
 
 import com.google.common.util.concurrent.ListenableFuture;
 
-import org.checkerframework.checker.units.qual.C;
+// import org.checkerframework.checker.units.qual.C;
 
 import java.io.File;
 import java.io.IOException;
@@ -243,7 +243,7 @@ public class CameraVieActivity extends AppCompatActivity {
             sourceBitmap = image;
             if (Utils.checkRotate(this.sourceBitmap))
                 sourceBitmap = Utils.rotateBitmap(this.sourceBitmap, 90);
-            cropBitmap = Utils.processBitmap(sourceBitmap, TF_OD_API_INPUT_SIZE);
+            cropBitmap = Bitmap.createScaledBitmap(sourceBitmap, TF_OD_API_INPUT_SIZE, TF_OD_API_INPUT_SIZE, true);
             Toast.makeText(CameraVieActivity.this, "Cumming" , Toast.LENGTH_SHORT).show();
 
             //Log.d("debug", "V cropped_width: " + cropBitmap.getWidth() + " cropped_height: " + cropBitmap.getHeight());
@@ -303,7 +303,7 @@ public class CameraVieActivity extends AppCompatActivity {
             HashMap<Float, String> classes = new HashMap<>();
             Bitmap croppedOdometer = Utils.cropImage(sourceBitmap, cropBitmap, odometerCoors); //crop out the odometer region
             Log.d("debug", "cropped_width: " + croppedOdometer.getWidth() + " cropped_height: " + croppedOdometer.getHeight());
-            croppedOdometer = Utils.processBitmap(croppedOdometer, TF_OD_API_INPUT_SIZE); //resize img
+            croppedOdometer = Bitmap.createScaledBitmap(croppedOdometer, TF_OD_API_INPUT_SIZE, TF_OD_API_INPUT_SIZE, true); //resize img
             List<Classifier.Recognition> resultsDigit = detector.recognizeImage(croppedOdometer);
 
             croped=croppedOdometer;
@@ -318,7 +318,7 @@ public class CameraVieActivity extends AppCompatActivity {
             for (int i = 0; i < xPositions.size(); i++) {
                 Float xPos = xPositions.get(i);
                 String className = classes.get(xPos);
-                res += className;
+                if (!className.equals("odometer")) res += className;
             }
             Log.d("debug", res);
             //handleResult(croppedOdometer, resultsDigit); //display detected image on screen
