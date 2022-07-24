@@ -14,9 +14,13 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LifecycleOwner;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -49,12 +53,16 @@ import com.google.common.util.concurrent.ListenableFuture;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 
@@ -111,25 +119,40 @@ public class CameraVieActivity extends AppCompatActivity {
     }
 
 
+    private  void capturePhoto()
+    {
+        GetBitmapFromDir();
+    }
 
-    private void capturePhoto() {
+    private void cacpturePhoto() {
         long timestamp = System.currentTimeMillis();
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, "temp_pic");
         contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg");
 
+        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString() + File.separator + "Diary_oil";
 
-        File file = new File("/sdcard/Pictures/temp_pic.jpg");
-        boolean bool = file.delete();
+        File outputDir = new File(path);
 
-        if (bool)
 
-            //Toast.makeText(CameraVieActivity.this, uri+"", Toast.LENGTH_SHORT).show();
-        {
+        Toast.makeText(CameraVieActivity.this, outputDir.exists()+"", Toast.LENGTH_SHORT).show();
+        //create dir if not there
+        if (!outputDir.exists()) {
+            outputDir.mkdir();
 
-           //Toast.makeText(CameraVieActivity.this, bool.toString(), Toast.LENGTH_SHORT).show();
         }
+
+        File file = new File(path+File.separator+"/temp_pic.jpg");
+        Uri outputdir = Uri.fromFile(outputDir);
+        Toast.makeText(CameraVieActivity.this, outputdir.getPath()+"", Toast.LENGTH_SHORT).show();
+
+
+
+        boolean bool = file.delete();
+        //Toast.makeText(CameraVieActivity.this, file.getAbsolutePath() + file.exists(), Toast.LENGTH_SHORT).show();
+
+
         imageCapture.takePicture(
                 new ImageCapture.OutputFileOptions.Builder(
                         getContentResolver(),
@@ -143,8 +166,8 @@ public class CameraVieActivity extends AppCompatActivity {
                         Toast.makeText(CameraVieActivity.this, "Photo has been saved successfully " , Toast.LENGTH_SHORT).show();
 
                         //uri = outputFileResults.getSavedUri();
-                        saved_pic = new File("/sdcard/Pictures/temp_pic.jpg");
-                        GetBitmapFromDir(Uri.fromFile(saved_pic));
+                        saved_pic = file;
+                        GetBitmapFromDir();
                     }
 
                     @Override
@@ -234,32 +257,35 @@ public class CameraVieActivity extends AppCompatActivity {
         }
     }
 
-    private void GetBitmapFromDir(Uri dat)
+    private boolean detectable;
+    private String odometer;
+
+    private void GetBitmapFromDir()
     {
 
         Bitmap image = null;
-        try {
-            image = MediaStore.Images.Media.getBitmap(this.getContentResolver(), dat);
-            sourceBitmap = image;
-            if (Utils.checkRotate(this.sourceBitmap))
-                sourceBitmap = Utils.rotateBitmap(this.sourceBitmap, 90);
-            cropBitmap = Bitmap.createScaledBitmap(sourceBitmap, TF_OD_API_INPUT_SIZE, TF_OD_API_INPUT_SIZE, true);
+        detectable = false;
+
+        //image = MediaStore.Images.Media.getBitmap(this.getContentResolver(), dat);
+        //sourceBitmap = image;
+        sourceBitmap = previewView.getBitmap();
+        if (Utils.checkRotate(this.sourceBitmap))
+            sourceBitmap = Utils.rotateBitmap(this.sourceBitmap, 90);
+        cropBitmap = Bitmap.createScaledBitmap(sourceBitmap, TF_OD_API_INPUT_SIZE, TF_OD_API_INPUT_SIZE, true);
+        cropBitmap = Utils.processBitmap(sourceBitmap,TF_OD_API_INPUT_SIZE);
+            /*
             Toast.makeText(CameraVieActivity.this, "Cumming" , Toast.LENGTH_SHORT).show();
+            Log.d("debug", "V cropped_width: " + cropBitmap.getWidth() + " cropped_height: " + cropBitmap.getHeight());
+            */
 
-            //Log.d("debug", "V cropped_width: " + cropBitmap.getWidth() + " cropped_height: " + cropBitmap.getHeight());
+/*
+        ImageView imageView;
+        imageView = (ImageView) findViewById(R.id.Minh);
+        imageView.setImageBitmap(cropBitmap);
+*/
 
+        detect_moment();
 
-            detect_moment();
-
-            ImageView imageView;
-            imageView = (ImageView) findViewById(R.id.Minh);
-            imageView.setImageBitmap(cropBitmap);
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            Toast.makeText(CameraVieActivity.this, "Error" , Toast.LENGTH_SHORT).show();
-        }
 
     }
 
@@ -270,16 +296,32 @@ public class CameraVieActivity extends AppCompatActivity {
         new Thread(() -> { //START HERE
             final List<Classifier.Recognition> results = detector.recognizeImage(cropBitmap); //get detection results
             String digits = readDigits(results);
-            Log.d("debug","Results = "+results.toString());
-            Log.d("debug","Digits = "+digits.toString());
+            //Log.d("debug","Results = "+results.toString());
+            //Log.d("debug","Digits = "+digits.toString());
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(CameraVieActivity.this, "Detected: " + digits , Toast.LENGTH_SHORT).show();
+                    String odo = digits_check(digits);
+
                     //display number on screen
-//                      handleResult(cropBitmap, results);
+//                      handleResult(cropBitmap, results);\
+                    if (odo == "")
+                    {
+                        detectable = false;
+                        Toast.makeText(CameraVieActivity.this, "Error at detect, pls take another picture /n"+"Detect "+digits, Toast.LENGTH_SHORT).show();
+
+                    }
+                    else
+                    {
+                        detectable = true;
+                        odometer = odo;
+                        popup_alert();
+                    }
                 }
             });
+
+
+
 
         }).start();
 
@@ -303,7 +345,9 @@ public class CameraVieActivity extends AppCompatActivity {
             HashMap<Float, String> classes = new HashMap<>();
             Bitmap croppedOdometer = Utils.cropImage(sourceBitmap, cropBitmap, odometerCoors); //crop out the odometer region
             Log.d("debug", "cropped_width: " + croppedOdometer.getWidth() + " cropped_height: " + croppedOdometer.getHeight());
-            croppedOdometer = Bitmap.createScaledBitmap(croppedOdometer, TF_OD_API_INPUT_SIZE, TF_OD_API_INPUT_SIZE, true); //resize img
+
+            //croppedOdometer = Bitmap.createScaledBitmap(croppedOdometer, TF_OD_API_INPUT_SIZE, TF_OD_API_INPUT_SIZE, true); //resize img
+            croppedOdometer = Utils.processBitmap(croppedOdometer,TF_OD_API_INPUT_SIZE);
             List<Classifier.Recognition> resultsDigit = detector.recognizeImage(croppedOdometer);
 
             croped=croppedOdometer;
@@ -329,6 +373,65 @@ public class CameraVieActivity extends AppCompatActivity {
 
     public static final float MINIMUM_CONFIDENCE_TF_OD_API = 0.3f;
     private Bitmap croped;
+    public static final String SHARED_PREFS = "sharedPrefs";
+    public static final String LAST_RECORD_ODO = "lastrecordodo";
+    public static final String LAST_RECORD_DATE = "lastrecorddate";
+    private String digits_check(String d)
+    {
+        int a = d.length();
+        if (a == 6 || a==7)
+        {
+            return d.substring(0,5);
+        }
+        if (a== 5)
+        {
+            return d;
+        }
+        else
+        {
+            return "";
+        }
+    }
+
+    private void popup_alert()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(CameraVieActivity.this);
+        builder.setCancelable(true);
+        builder.setTitle("Odometer detected ");
+        builder.setMessage("Confirm : "+odometer);
+        builder.setPositiveButton(android.R.string.ok,
+                new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString(LAST_RECORD_ODO, odometer);
+
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH);
+                        String currentDateandTime = sdf.format(new Date());
+                        editor.putString(LAST_RECORD_DATE, currentDateandTime);
+
+
+
+
+                        editor.apply();
+
+                        Intent intent = new Intent(CameraVieActivity.this, MainActivity.class);
+                        startActivity(intent);
+
+                    }
+                });
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
 
 
 }

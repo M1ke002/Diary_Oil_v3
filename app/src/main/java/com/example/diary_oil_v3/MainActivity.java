@@ -16,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
     private FloatingActionButton floatingActionButton;
+    public static final String SHARED_PREFS = "sharedPrefs";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

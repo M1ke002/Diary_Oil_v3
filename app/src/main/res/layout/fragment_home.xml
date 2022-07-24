@@ -36,10 +36,38 @@
                 android:textSize="25sp" />
 
 
+            <LinearLayout
+                android:layout_width="match_parent"
+
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/last_record_1"
+                    android:textSize="25sp"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="TextView"
+                    />
+
+                <TextView
+                    android:id="@+id/last_record_2"
+                    android:textSize="25sp"
+                    android:paddingTop="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="TextView" />
+            </LinearLayout>
+
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="213dp"
-                android:background="@drawable/group_14" />
+                android:background="@drawable/group_14" >
+
+            </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="wrap_content"

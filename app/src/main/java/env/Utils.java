@@ -10,6 +10,7 @@ import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.os.Environment;
 import android.util.Log;
+import android.graphics.Paint;
 
 //import org.tensorflow.lite.examples.detection.MainActivity;
 //import org.tensorflow.lite.examples.detection.tflite.Classifier;
@@ -169,7 +170,8 @@ public class Utils {
         frameToCropTransformations.invert(cropToFrameTransformations);
 
         final Canvas canvas = new Canvas(croppedBitmap);
-        canvas.drawBitmap(source, frameToCropTransformations, null);
+        canvas.drawBitmap(source, frameToCropTransformations, new Paint(6));
+
 
         return croppedBitmap;
     }
@@ -216,8 +218,7 @@ public class Utils {
         if (yMax + 5 <= originalHeight) yMax += 5;
         String testStr = "xMin: " + String.valueOf(xMin) + " yMin: " + String.valueOf(yMin) + " xMax: " + String.valueOf(xMax) + " yMax: " + String.valueOf(yMax);
         Log.d("debug",testStr); //debug
-        Bitmap croppedBitmap = Bitmap.createBitmap(originalImage, (int)xMin, (int)yMin, (int)xMax-(int)xMin, (int)yMax-(int)yMin, null, true);
-
+        Bitmap croppedBitmap = Bitmap.createBitmap(originalImage, (int)xMin, (int)yMin, (int)xMax-(int)xMin, (int)yMax-(int)yMin);
         return croppedBitmap;
     }
 

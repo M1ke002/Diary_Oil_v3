@@ -1,5 +1,6 @@
 package com.example.diary_oil_v3;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +25,7 @@ public class HomeFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
 
     public HomeFragment() {
         // Required empty public constructor
@@ -46,6 +49,8 @@ public class HomeFragment extends Fragment {
         return fragment;
     }
 
+    private TextView a1,a2;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,12 +58,25 @@ public class HomeFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
+
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        View returnView = inflater.inflate(R.layout.fragment_home, container, false);
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(MainActivity.SHARED_PREFS, this.getActivity().MODE_PRIVATE);
+        String o1 = sharedPreferences.getString(CameraVieActivity.LAST_RECORD_ODO,"");
+        String o2 = sharedPreferences.getString(CameraVieActivity.LAST_RECORD_DATE,"");
+        a1 = (TextView) returnView.findViewById(R.id.last_record_1);
+        a2 = (TextView) returnView.findViewById(R.id.last_record_2);
+        a1.setText(o1);
+        a2.setText(o2);
+
+        return returnView;
     }
 }
