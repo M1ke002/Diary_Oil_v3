@@ -23,6 +23,26 @@
             android:name=".CameraVieActivity"
             android:exported="false" />
         <activity
+            android:name=".On_Boa1"
+            android:exported="false"
+            android:label="Cardiff" />
+        <activity
+            android:name=".On_Boa4"
+            android:exported="false"
+            android:label="Cardiff" />
+        <activity
+            android:name=".On_Boa"
+            android:exported="false"
+            android:label="Cardiff" />
+        <activity
+            android:name=".On_Boa3"
+            android:exported="false"
+            android:label="Cardiff" />
+        <activity
+            android:name=".On_Boa2"
+            android:exported="false"
+            android:label="Cardiff" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

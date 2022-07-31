@@ -9,5 +9,11 @@
     <color name="white">#FFFFFFFF</color>
     <color name="fab_color">#D75656</color>
     <color name="gray">#B2BEB5</color>
+    <color name="gray_dark">#63666A</color>
     <color name="Home_color">#56D7BC</color>
+    <color name="orange">#ED7429</color>
+    <color name="purple_3">#8E24AA</color>
+    <color name="Theme">#37B49E</color>
+    <color name="Theme_second">#2699FB</color>
+
 </resources>

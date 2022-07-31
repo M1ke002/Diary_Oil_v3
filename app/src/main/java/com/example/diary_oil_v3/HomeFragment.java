@@ -50,6 +50,7 @@ public class HomeFragment extends Fragment {
     }
 
     private TextView a1,a2;
+    private TextView welcome;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,6 +65,7 @@ public class HomeFragment extends Fragment {
 
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -76,6 +78,9 @@ public class HomeFragment extends Fragment {
         a2 = (TextView) returnView.findViewById(R.id.last_record_2);
         a1.setText(o1);
         a2.setText(o2);
+        welcome = (TextView) returnView.findViewById(R.id.welcome_text);
+        String name = sharedPreferences.getString(On_Boa1.NAME,"");
+        welcome.setText("Welcome back, "+ name);
 
         return returnView;
     }

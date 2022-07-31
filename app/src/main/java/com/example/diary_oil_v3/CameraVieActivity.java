@@ -308,7 +308,7 @@ public class CameraVieActivity extends AppCompatActivity {
                     if (odo == "")
                     {
                         detectable = false;
-                        Toast.makeText(CameraVieActivity.this, "Error at detect, pls take another picture /n"+"Detect "+digits, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CameraVieActivity.this, "Error at detect, pls take another picture \n"+"Detect "+digits, Toast.LENGTH_SHORT).show();
 
                     }
                     else

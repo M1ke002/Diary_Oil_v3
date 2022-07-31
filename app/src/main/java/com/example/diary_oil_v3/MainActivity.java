@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 
@@ -25,6 +26,14 @@ public class MainActivity extends AppCompatActivity {
         floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
         floatingActionButton.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, CameraVieActivity.class)));
         replaceFragment(new HomeFragment());
+        SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.SHARED_PREFS, MODE_PRIVATE);
+        String o2 = sharedPreferences.getString(CameraVieActivity.LAST_RECORD_DATE,"Do");
+        if (o2.equals("Do"))
+        {
+            Intent intent = new Intent(this, On_Boa.class);
+            startActivity(intent);
+        }
+
         binding.bottomNaviView.setOnItemSelectedListener(item -> {
 
         switch (item.getItemId()){

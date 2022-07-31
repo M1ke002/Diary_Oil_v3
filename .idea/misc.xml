@@ -3,8 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Diary_oil/Diary_Oil_v4/app/src/main/res/drawable/ic_person.xml" value="0.1865" />
+        <entry key="..\:/Diary_oil/Diary_Oil_v4/app/src/main/res/drawable/purple_bg_panel.xml" value="0.1915" />
+        <entry key="..\:/Diary_oil/Diary_Oil_v4/app/src/main/res/drawable/trans_bg.xml" value="0.1865" />
+        <entry key="..\:/Diary_oil/Diary_Oil_v4/app/src/main/res/drawable/white_bg_panel.xml" value="0.2" />
+        <entry key="..\:/Diary_oil/Diary_Oil_v4/app/src/main/res/font/cool_font.xml" value="0.21354166666666666" />
         <entry key="..\:/Diary_oil/Diary_Oil_v4/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
-        <entry key="..\:/Diary_oil/Diary_Oil_v4/app/src/main/res/layout/fragment_home.xml" value="0.1778875849289685" />
+        <entry key="..\:/Diary_oil/Diary_Oil_v4/app/src/main/res/layout/fragment_home.xml" value="0.1992121553179516" />
+        <entry key="..\:/Diary_oil/Diary_Oil_v4/app/src/main/res/layout/onboa.xml" value="0.184375" />
+        <entry key="..\:/Diary_oil/Diary_Oil_v4/app/src/main/res/layout/setuppage1.xml" value="0.184375" />
+        <entry key="..\:/Diary_oil/Diary_Oil_v4/app/src/main/res/layout/setuppage2.xml" value="0.24682971014492755" />
+        <entry key="..\:/Diary_oil/Diary_Oil_v4/app/src/main/res/layout/setuppage3.xml" value="0.24682971014492755" />
+        <entry key="..\:/Diary_oil/Diary_Oil_v4/app/src/main/res/layout/setuppage4.xml" value="0.24682971014492755" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/Diary_Oil_v3/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.146" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/Diary_Oil_v3/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1785" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/Diary_Oil_v3/app/src/main/res/drawable/last_record.xml" value="0.203" />
