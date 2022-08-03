@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
                 replaceFragment(new ProfileFragment());
                 break;
             case R.id.settings:
-                replaceFragment(new SettingsFragment());
+                replaceFragment(new SettingFragment());
                 break;
             case R.id.timeline:
                 replaceFragment(new TimelineFragment());

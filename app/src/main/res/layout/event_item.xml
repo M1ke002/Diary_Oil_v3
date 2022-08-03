@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:background="@color/white"
+    android:layout_marginTop="10dp"
+    android:layout_marginRight="10dp">
+
+    <ImageView
+        android:id="@+id/event_icon"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:src="@drawable/hero"
+        />
+
+    <LinearLayout
+        android:id="@+id/infomation_block"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="0dp"
+        android:layout_toEndOf="@+id/event_icon"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/event_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/app_name"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:textStyle="bold"></TextView>
+
+        <TextView
+            android:id="@+id/event_due"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2nd Sun 2020"
+            android:textColor="@android:color/background_dark"
+            android:textSize="15sp"
+            android:textStyle="italic" />
+
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/group_3"
+        android:layout_alignBottom="@+id/event_odo"
+        android:layout_alignTop="@+id/event_odo"
+        android:layout_alignStart="@id/event_odo"
+        />
+
+    <TextView
+        android:id="@+id/event_odo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+android:layout_marginTop="8dp"
+
+
+        android:letterSpacing="0.25"
+        android:text="23434"
+
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="40dp"
+        android:textStyle="bold" />
+
+
+
+
+
+
+</RelativeLayout>

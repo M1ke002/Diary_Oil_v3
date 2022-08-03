@@ -1,12 +1,26 @@
 package com.example.diary_oil_v3;
 
+import static com.example.diary_oil_v3.CameraVieActivity.EVENT_LIST;
+
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.gson.Gson;
+
+import java.util.List;
+
+import event_class.Event;
+import event_class.EventList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,6 +33,7 @@ public class TimelineFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    public static final String SHARED_PREFS = "sharedPrefs";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -55,10 +70,37 @@ public class TimelineFragment extends Fragment {
         }
     }
 
+    private RecyclerView rcvData;
+    private EventAdapter eventAdapter;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_timeline, container, false);
+        View view = inflater.inflate(R.layout.fragment_timeline, container, false);
+        rcvData = view.findViewById(R.id.event_viewlist);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getActivity());
+        rcvData.setLayoutManager(linearLayoutManager);
+        eventAdapter = new EventAdapter(getlistuser());
+        rcvData.setAdapter(eventAdapter);
+        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this.getContext(),DividerItemDecoration.VERTICAL);
+        rcvData.addItemDecoration(itemDecoration);
+
+        return view;
+    }
+
+    private List<Event> getlistuser() {
+        Gson gson = new Gson();
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(SHARED_PREFS, this.getActivity().MODE_PRIVATE);
+        String json = sharedPreferences.getString(EVENT_LIST,"");
+
+        EventList eventList;
+        if (json=="")
+        {eventList = new EventList();}
+        else
+        {
+            eventList = gson.fromJson(json,EventList.class);
+        }
+        return eventList.buildTimeline();
     }
 }

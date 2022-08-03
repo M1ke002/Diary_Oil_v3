@@ -58,4 +58,5 @@ dependencies {
 // CameraX View class
     implementation "androidx.camera:camera-view:${cameraxVersion}"
 
+
 }

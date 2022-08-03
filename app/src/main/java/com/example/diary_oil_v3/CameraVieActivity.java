@@ -22,6 +22,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -34,20 +35,26 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import env.ImageUtils;
 import env.Logger;
 import env.Utils;
+import event_class.Event;
+import event_class.EventList;
 import tflite.Classifier;
 import tflite.YoloV4Classifier;
 import tracking.MultiBoxTracker;
 
 import com.google.common.util.concurrent.ListenableFuture;
+import com.google.gson.Gson;
 
 // import org.checkerframework.checker.units.qual.C;
 
@@ -63,6 +70,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 
@@ -74,6 +82,7 @@ public class CameraVieActivity extends AppCompatActivity {
 
     private ListenableFuture<ProcessCameraProvider> cameraProviderListenableFuture;
     private Button snap ;
+    private Button input_btn;
 
     private PreviewView previewView;
     private ImageCapture imageCapture;
@@ -92,6 +101,7 @@ public class CameraVieActivity extends AppCompatActivity {
             requestPermissions(permission,1000);
         }}
         snap = (Button) findViewById(R.id.snapview);
+        input_btn = (Button) findViewById(R.id.input_button);
         previewView = (PreviewView) findViewById(R.id.previewview);
 
         cameraProviderListenableFuture = ProcessCameraProvider.getInstance(this);
@@ -114,6 +124,13 @@ public class CameraVieActivity extends AppCompatActivity {
 
 
             //detect_moment();
+            }
+        });
+
+        input_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                popup_alert();
             }
         });
     }
@@ -315,7 +332,8 @@ public class CameraVieActivity extends AppCompatActivity {
                     {
                         detectable = true;
                         odometer = odo;
-                        popup_alert();
+                        //popup_alert();
+                        popup_dialog();
                     }
                 }
             });
@@ -376,6 +394,8 @@ public class CameraVieActivity extends AppCompatActivity {
     public static final String SHARED_PREFS = "sharedPrefs";
     public static final String LAST_RECORD_ODO = "lastrecordodo";
     public static final String LAST_RECORD_DATE = "lastrecorddate";
+
+    public static final String EVENT_LIST = "eventlist";
     private String digits_check(String d)
     {
         int a = d.length();
@@ -397,29 +417,20 @@ public class CameraVieActivity extends AppCompatActivity {
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(CameraVieActivity.this);
         builder.setCancelable(true);
-        builder.setTitle("Odometer detected ");
-        builder.setMessage("Confirm : "+odometer);
+        builder.setTitle("Enter new Odo ");
+        final EditText input = new EditText(this);
+        input.setText(odometer);
+        input.setInputType(InputType.TYPE_CLASS_NUMBER);
+        input.setRawInputType(Configuration.KEYBOARD_12KEY);
+        builder.setView(input);
         builder.setPositiveButton(android.R.string.ok,
                 new DialogInterface.OnClickListener() {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString(LAST_RECORD_ODO, odometer);
-
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH);
-                        String currentDateandTime = sdf.format(new Date());
-                        editor.putString(LAST_RECORD_DATE, currentDateandTime);
-
-
-
-
-                        editor.apply();
-
-                        Intent intent = new Intent(CameraVieActivity.this, MainActivity.class);
-                        startActivity(intent);
+                    odometer = input.getText().toString();
+                    popup_dialog();
 
                     }
                 });
@@ -434,4 +445,95 @@ public class CameraVieActivity extends AppCompatActivity {
     }
 
 
+    private void popup_dialog()
+    {
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.confirm_dialog);
+        dialog.setCanceledOnTouchOutside(true);
+        TextView odo = (TextView) dialog.findViewById(R.id.odo_num);
+        odo.setText(odometer);
+
+        Button a1 = (Button) dialog.findViewById(R.id.save_data);
+        Button a2 = (Button) dialog.findViewById(R.id.new_oil_change);
+        Button a3 = (Button) dialog.findViewById(R.id.new_maintenance);
+        Button a4 = (Button) dialog.findViewById(R.id.discard);
+
+        a1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                save_data(0);
+            }
+        });
+
+        a2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                save_data(1);
+            }
+        });
+
+        a3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                save_data(2);
+            }
+        });
+
+        a4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.cancel();
+            }
+        });
+
+        dialog.show();
+    }
+
+
+    public void save_data(int a)
+    {
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(LAST_RECORD_ODO, odometer);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH);
+        String currentDateandTime = sdf.format(new Date());
+        editor.putString(LAST_RECORD_DATE, currentDateandTime);
+
+
+        Event new_event = new Event(a,currentDateandTime,odometer);
+        EventList eventList = init_list();
+        eventList.addEvent(new_event);
+        Gson gson = new Gson();
+        String json = gson.toJson(eventList);
+
+        editor.putString(EVENT_LIST,json);
+
+
+        Log.d("debug", "json file\n" +json );
+
+        editor.apply();
+
+        Intent intent = new Intent(CameraVieActivity.this, MainActivity.class);
+        startActivity(intent);
+    }
+
+
+
+    public EventList init_list()
+    {
+        Gson gson = new Gson();
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        String json = sharedPreferences.getString(EVENT_LIST,"");
+        Log.d("debug", "json init file\n" +json );
+        EventList eventList;
+        if (json=="")
+        {eventList = new EventList();}
+        else
+        {
+            eventList = gson.fromJson(json,EventList.class);
+        }
+        return eventList;
+
+    }
 }

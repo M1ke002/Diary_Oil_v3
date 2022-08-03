@@ -1,5 +1,10 @@
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <RingtonePreference
+        android:defaultValue=""
+        android:key="ringtone_preference_2"
+        android:title="Ringtone preference" />
     <PreferenceCategory app:title="@string/messages_header">
 
         <EditTextPreference
@@ -17,6 +22,10 @@
 
     </PreferenceCategory>
 
+    <RingtonePreference
+        android:defaultValue=""
+        android:key="ringtone_preference_1"
+        android:title="Ringtone preference" />
     <PreferenceCategory app:title="@string/sync_header">
 
         <SwitchPreferenceCompat
@@ -29,6 +38,10 @@
             app:summaryOff="@string/attachment_summary_off"
             app:summaryOn="@string/attachment_summary_on"
             app:title="@string/attachment_title" />
+        <RingtonePreference
+            android:defaultValue=""
+            android:key="ringtone_preference_2"
+            android:title="Ringtone preference" />
 
     </PreferenceCategory>
 
