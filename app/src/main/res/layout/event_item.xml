@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="10dp"
@@ -13,6 +14,20 @@
         android:layout_height="70dp"
         android:src="@drawable/hero"
         />
+
+    <ImageView
+        android:id="@+id/event_typeicon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignTop="@id/event_icon"
+        android:layout_alignRight="@id/event_icon"
+        android:layout_alignBottom="@id/event_icon"
+        android:layout_marginEnd="20dp"
+        android:src="@drawable/ic_baseline_local_gas_station_24"
+
+
+        />
+
 
     <LinearLayout
         android:id="@+id/infomation_block"

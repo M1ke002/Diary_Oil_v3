@@ -1,51 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingBottom="20dp">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <androidx.camera.view.PreviewView
             android:id="@+id/previewview"
             android:layout_width="match_parent"
-            android:layout_height="656dp">
+            android:layout_height="match_parent">
 
         </androidx.camera.view.PreviewView>
 
-        <RelativeLayout
+        <ImageView
+            android:id="@+id/imageView9"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center">
+            app:srcCompat="@drawable/camera_mode"
+            android:scaleType="fitXY"/>
 
-            <Button
-                android:id="@+id/snapview"
-                android:layout_width="wrap_content"
+
+
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <Switch
+                android:id="@+id/switch1"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="TAKE A PICTURE PLS">
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="0dp"
+                android:layout_marginBottom="7dp"
+
+                android:layout_toStartOf="@id/snapview"
+                android:text="Auto Detect :"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                android:textStyle="bold" />
 
 
-            </Button>
-
-            <ImageView
-                android:id="@+id/Minh"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="left" />
-
-            <Button
+            <TextView
                 android:id="@+id/input_button"
-                android:layout_width="wrap_content"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
-                android:text="Input"
-                android:layout_marginLeft="20dp"
-                android:layout_toRightOf="@id/snapview"/>
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="-20dp"
+                android:layout_marginBottom="7dp"
+                android:layout_toEndOf="@id/snapview"
+                android:clickable="true"
+                android:drawableStart="@drawable/ic_baseline_edit_24"
+                android:drawablePadding="10dp"
+
+
+                android:drawableTint="@color/white"
+                android:text="Manual Update"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/snapview"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginEnd="40dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/snap_button"
+                android:gravity="center">
+
+
+            </androidx.appcompat.widget.AppCompatButton>
         </RelativeLayout>
 
 
-    </LinearLayout>
+    </FrameLayout>
 </LinearLayout>

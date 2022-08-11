@@ -1,5 +1,6 @@
 package com.example.diary_oil_v3;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -71,8 +72,21 @@ public class SettingFragment extends Fragment {
             }
         });
 
+        Button onboa_btn = view.findViewById(R.id.onboa_stuffs);
+        onboa_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            backtoonboard();
+            }
+        });
+
 
         return view;
+    }
+
+    private void backtoonboard() {
+        Intent intent = new Intent(this.getActivity(), On_Boa.class);
+        startActivity(intent);
     }
 
     private void resetdata() {

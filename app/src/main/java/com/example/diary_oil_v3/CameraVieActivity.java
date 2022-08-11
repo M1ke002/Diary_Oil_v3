@@ -42,6 +42,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import env.ImageUtils;
@@ -53,6 +54,7 @@ import tflite.Classifier;
 import tflite.YoloV4Classifier;
 import tracking.MultiBoxTracker;
 
+import com.androidchils.odometer.Odometer;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.gson.Gson;
 
@@ -82,7 +84,7 @@ public class CameraVieActivity extends AppCompatActivity {
 
     private ListenableFuture<ProcessCameraProvider> cameraProviderListenableFuture;
     private Button snap ;
-    private Button input_btn;
+    private TextView input_btn;
 
     private PreviewView previewView;
     private ImageCapture imageCapture;
@@ -101,7 +103,7 @@ public class CameraVieActivity extends AppCompatActivity {
             requestPermissions(permission,1000);
         }}
         snap = (Button) findViewById(R.id.snapview);
-        input_btn = (Button) findViewById(R.id.input_button);
+        input_btn =  findViewById(R.id.input_button);
         previewView = (PreviewView) findViewById(R.id.previewview);
 
         cameraProviderListenableFuture = ProcessCameraProvider.getInstance(this);
@@ -130,7 +132,7 @@ public class CameraVieActivity extends AppCompatActivity {
         input_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                popup_alert();
+                popup_alert2();
             }
         });
     }
@@ -333,7 +335,7 @@ public class CameraVieActivity extends AppCompatActivity {
                         detectable = true;
                         odometer = odo;
                         //popup_alert();
-                        popup_dialog();
+                        popup_dialog("Odometer Detected:");
                     }
                 }
             });
@@ -429,8 +431,8 @@ public class CameraVieActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                    odometer = input.getText().toString();
-                    popup_dialog();
+                    odometer = Utils.formatstring( input.getText().toString());
+                    popup_dialog("");
 
                     }
                 });
@@ -444,18 +446,49 @@ public class CameraVieActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    private String old_odo;
 
-    private void popup_dialog()
+    private void popup_alert2()
+    {
+        SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.SHARED_PREFS, MODE_PRIVATE);
+        String o1 = sharedPreferences.getString(CameraVieActivity.LAST_RECORD_ODO,"");
+        odometer = Utils.formatstring(o1);
+        old_odo=odometer;
+        popup_dialog("Input New Odometer");
+
+    }
+
+
+    private Odometer odo4;
+    private void popup_dialog(String a)
     {
         Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.confirm_dialog);
         dialog.setCanceledOnTouchOutside(true);
-        TextView odo = (TextView) dialog.findViewById(R.id.odo_num);
-        odo.setText(odometer);
+        LinearLayout odo2 = (LinearLayout) dialog.findViewById(R.id.odometer);
+
+
+        odo4 = new Odometer.Builder(this)
+                .textSize(500)
+                .textColor(ContextCompat.getColor(this, R.color.white))
+                .reading(odometer)
+                .slot(5)
+                .font(getString(com.androidchils.odometer.R.string.lato_regular))
+                .background(ContextCompat.getColor(this, R.color.black), ContextCompat.getColor(this, R.color.black))
+                .build();
+
+
+
+        odo2.addView(odo4);
+
+
+        TextView odo = (TextView) dialog.findViewById(R.id.textView5);
+        odo.setText(a);
 
         Button a1 = (Button) dialog.findViewById(R.id.save_data);
         Button a2 = (Button) dialog.findViewById(R.id.new_oil_change);
         Button a3 = (Button) dialog.findViewById(R.id.new_maintenance);
+        Button a5 = (Button) dialog.findViewById(R.id.new_fuel);
         Button a4 = (Button) dialog.findViewById(R.id.discard);
 
         a1.setOnClickListener(new View.OnClickListener() {
@@ -486,11 +519,67 @@ public class CameraVieActivity extends AppCompatActivity {
             }
         });
 
+        a5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                save_data(3);
+            }
+        });
+
         dialog.show();
     }
 
 
+
+    private void alert_check(int a)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(CameraVieActivity.this);
+        builder.setCancelable(false);
+        builder.setTitle("Confirmation");
+        final TextView input = new TextView(this);
+        input.setText("Your new odometer is smaller than your latest record !!!\nThis action may disrupt the odometer prediction. ");
+        input.setPadding(20,0,0,0);
+
+        builder.setView(input);
+        builder.setPositiveButton(android.R.string.ok,
+                new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        write_save_file(a);
+
+
+                    }
+                });
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+    }
+
     public void save_data(int a)
+    {
+        odometer = odo4.getFinalOdometerValue();
+        odometer = Utils.formatstring( odometer.replaceAll("\\s+",""));
+        if (Integer.valueOf(old_odo)>Integer.valueOf(odometer))
+        {
+            alert_check(a);
+        }
+        else
+        {
+           write_save_file(a);
+        }
+
+    }
+
+    public void write_save_file(int a)
     {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -509,11 +598,7 @@ public class CameraVieActivity extends AppCompatActivity {
 
         editor.putString(EVENT_LIST,json);
 
-
-        Log.d("debug", "json file\n" +json );
-
         editor.apply();
-
         Intent intent = new Intent(CameraVieActivity.this, MainActivity.class);
         startActivity(intent);
     }

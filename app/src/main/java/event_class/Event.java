@@ -8,6 +8,7 @@ import java.time.LocalTime;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 
 public class Event {
@@ -28,7 +29,8 @@ public class Event {
 
 
 
-	private String[] status;
+	private int status;
+
 	private Map<String,String> snapshot;
 	public String date,odo;
 
@@ -40,19 +42,27 @@ public class Event {
 		switch (type){
 			case 0:
 			typename = "Record";
-			this.resourceid = R.drawable.hero_snap;
+			this.resourceid = R.drawable.ic_baseline_photo_camera_24;
 			break;
 
 			case 1:
 				typename = "Oil Change";
-				this.resourceid = R.drawable.hero_oil;
+				this.resourceid = R.drawable.oil;
 				break;
 
 			case 2:
 				typename = "Maintenance";
-				this.resourceid = R.drawable.hero_main;
+				this.resourceid = R.drawable.main;
 
 				break;
+
+			case 3:
+				typename = "Fuel Change";
+				this.resourceid = R.drawable.ic_baseline_local_gas_station_24;
+
+				break;
+
+
 
 			default:
 				typename = "How do you get this ?";
@@ -69,6 +79,8 @@ public class Event {
 		this.snapshot.put(date,odo);
 		this.date=date;
 		this.odo=odo;
+		Random rand = new Random();
+		this.status = rand.nextInt(4);
 		
 		
 	}
@@ -105,12 +117,31 @@ public class Event {
 		this.type = type;
 	}
 
-	public String[] getStatus() {
-		return this.status;
-	}
 
-	public void setStatus(String[] status) {
-		this.status = status;
+	public int getStatus() {
+		switch (this.status)
+		{
+			case 0:
+				return R.drawable.hero;
+
+
+			case 1:
+				return R.drawable.icon_miss;
+
+
+			case 2:
+				return R.drawable.icon_late;
+
+
+			case 3:
+				return R.drawable.icon_pending;
+
+
+			default:
+				return R.drawable.record_icon;
+
+
+		}
+
 	}
-	
 }

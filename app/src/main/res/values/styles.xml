@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Number_Picker_Themw" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorAccent">@color/white</item>
+        <item name="android:textSize">20dp</item>
+        <item name="background">@color/black</item>
+
+    </style>
+</resources>

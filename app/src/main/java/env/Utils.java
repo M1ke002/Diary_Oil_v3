@@ -234,4 +234,17 @@ public class Utils {
 //        Log.d("debug","height: " + String.valueOf(height) + " width: "+String.valueOf(width));
         return height < width; //images with height < width are rotated 90 degrees by default?
     }
+
+
+    public static String formatstring(String a)
+    {
+
+        while (a.length()<5)
+        {
+            a="0"+a;
+        }
+
+
+        return a.substring(0,5);
+    }
 }

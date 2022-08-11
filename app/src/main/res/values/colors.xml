@@ -15,5 +15,6 @@
     <color name="purple_3">#8E24AA</color>
     <color name="Theme">#37B49E</color>
     <color name="Theme_second">#2699FB</color>
+    <color name="grey_tran">#28FFFFFF</color>
 
 </resources>

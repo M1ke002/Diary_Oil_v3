@@ -8,7 +8,7 @@
 
     <item
         android:id="@+id/timeline"
-        android:icon="@drawable/ic_timeline"
+        android:icon="@drawable/ic_baseline_calendar_month_24"
         android:title="Timeline"/>
     <item
         android:id="@+id/pl"
@@ -17,8 +17,8 @@
 
     <item
         android:id="@+id/person"
-        android:icon="@drawable/ic_person"
-        android:title="Profile"/>
+        android:icon="@drawable/ic_timeline"
+        android:title="Graph"/>
     <item
         android:id="@+id/settings"
         android:icon="@drawable/ic_settings"
