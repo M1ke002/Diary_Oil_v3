@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,7 +80,7 @@ public class TimelineFragment extends Fragment {
         rcvData = view.findViewById(R.id.event_viewlist);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getActivity());
         rcvData.setLayoutManager(linearLayoutManager);
-        eventAdapter = new EventAdapter(getlistuser());
+        eventAdapter = new EventAdapter(this.getContext(), getlistuser());
         rcvData.setAdapter(eventAdapter);
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this.getContext(),DividerItemDecoration.VERTICAL);
         rcvData.addItemDecoration(itemDecoration);
@@ -102,5 +101,14 @@ public class TimelineFragment extends Fragment {
             eventList = gson.fromJson(json,EventList.class);
         }
         return eventList.buildTimeline();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (eventAdapter != null)
+        {
+            eventAdapter.release();
+        }
     }
 }

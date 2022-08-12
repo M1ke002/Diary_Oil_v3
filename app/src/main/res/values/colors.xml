@@ -16,5 +16,7 @@
     <color name="Theme">#37B49E</color>
     <color name="Theme_second">#2699FB</color>
     <color name="grey_tran">#28FFFFFF</color>
+    <color name="yellow">#BAC51E</color>
+
 
 </resources>

@@ -1,9 +1,8 @@
 package event_class;
 
-import android.widget.ImageView;
-
 import com.example.diary_oil_v3.R;
 
+import java.io.Serializable;
 import java.time.LocalTime;
 
 import java.util.HashMap;
@@ -11,7 +10,7 @@ import java.util.Map;
 import java.util.Random;
 
 
-public class Event {
+public class Event implements Serializable {
 	private int distance;
 	private int days;
 	private LocalTime due;
@@ -28,22 +27,19 @@ public class Event {
 	private int resourceid;
 
 
-
 	private int status;
 
-	private Map<String,String> snapshot;
-	public String date,odo;
+	private Map<String, String> snapshot;
+	public String date, odo;
 
-	
-	
 
-	public Event(int type, String date, String odo ) {
+	public Event(int type, String date, String odo) {
 		String typename;
-		switch (type){
+		switch (type) {
 			case 0:
-			typename = "Record";
-			this.resourceid = R.drawable.ic_baseline_photo_camera_24;
-			break;
+				typename = "Record";
+				this.resourceid = R.drawable.ic_baseline_photo_camera_24;
+				break;
 
 			case 1:
 				typename = "Oil Change";
@@ -63,7 +59,6 @@ public class Event {
 				break;
 
 
-
 			default:
 				typename = "How do you get this ?";
 				this.resourceid = R.drawable.hero;
@@ -71,26 +66,26 @@ public class Event {
 				break;
 
 
-
 		}
 
 		this.type = typename;
-		this.snapshot = new HashMap<String, String>();;
-		this.snapshot.put(date,odo);
-		this.date=date;
-		this.odo=odo;
+		this.snapshot = new HashMap<String, String>();
+		;
+		this.snapshot.put(date, odo);
+		this.date = date;
+		this.odo = odo;
 		Random rand = new Random();
 		this.status = rand.nextInt(4);
-		
-		
+
+
 	}
-	
+
 	public void newSnapshot(String[] details) {
-		
+
 	}
-	
+
 	public void update() {
-		
+
 	}
 
 	public int getDistance() {
@@ -119,8 +114,7 @@ public class Event {
 
 
 	public int getStatus() {
-		switch (this.status)
-		{
+		switch (this.status) {
 			case 0:
 				return R.drawable.hero;
 
@@ -142,6 +136,59 @@ public class Event {
 
 
 		}
+
+	}
+
+	public int getColor() {
+		switch (this.status) {
+			case 0:
+				return R.color.Home_color;
+
+
+			case 1:
+				return R.color.yellow;
+
+
+			case 2:
+				return R.color.fab_color;
+
+
+			case 3:
+				return R.color.purple_3;
+
+
+			default:
+				return R.color.Theme_second;
+
+
+		}
+
+	}
+
+	public String getStatusName() {
+		switch (this.status) {
+			case 0:
+				return "Completed";
+
+
+			case 1:
+				return "Missing...";
+
+
+			case 2:
+				return "Late";
+
+
+			case 3:
+				return "Pending...";
+
+
+			default:
+				return "Stuff";
+
+
+		}
+
 
 	}
 }

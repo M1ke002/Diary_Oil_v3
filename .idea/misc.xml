@@ -3,13 +3,17 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Diary_oil/Diary_Oil_v4/app/src/main/res/drawable/background_stuff.xml" value="0.1635" />
+        <entry key="..\:/Diary_oil/Diary_Oil_v4/app/src/main/res/drawable/details_panel.xml" value="0.1635" />
         <entry key="..\:/Diary_oil/Diary_Oil_v4/app/src/main/res/drawable/group3scale.xml" value="0.156" />
+        <entry key="..\:/Diary_oil/Diary_Oil_v4/app/src/main/res/drawable/ic_baseline_edit_24.xml" value="0.1635" />
         <entry key="..\:/Diary_oil/Diary_Oil_v4/app/src/main/res/drawable/ic_person.xml" value="0.1865" />
         <entry key="..\:/Diary_oil/Diary_Oil_v4/app/src/main/res/drawable/purple_bg_panel.xml" value="0.1915" />
         <entry key="..\:/Diary_oil/Diary_Oil_v4/app/src/main/res/drawable/record_icon.xml" value="0.155" />
         <entry key="..\:/Diary_oil/Diary_Oil_v4/app/src/main/res/drawable/trans_bg.xml" value="0.1865" />
         <entry key="..\:/Diary_oil/Diary_Oil_v4/app/src/main/res/drawable/white_bg_panel.xml" value="0.2" />
         <entry key="..\:/Diary_oil/Diary_Oil_v4/app/src/main/res/font/cool_font.xml" value="0.21354166666666666" />
+        <entry key="..\:/Diary_oil/Diary_Oil_v4/app/src/main/res/layout/activity_item_detail.xml" value="0.1944696282864914" />
         <entry key="..\:/Diary_oil/Diary_Oil_v4/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
         <entry key="..\:/Diary_oil/Diary_Oil_v4/app/src/main/res/layout/better_dialog.xml" value="0.264" />
         <entry key="..\:/Diary_oil/Diary_Oil_v4/app/src/main/res/layout/camera_view.xml" value="0.125" />
