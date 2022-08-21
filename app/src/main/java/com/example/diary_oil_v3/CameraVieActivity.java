@@ -15,6 +15,7 @@ import androidx.lifecycle.LifecycleOwner;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
@@ -40,6 +41,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -48,6 +50,7 @@ import android.widget.Toast;
 import env.ImageUtils;
 import env.Logger;
 import env.Utils;
+import event_class.DateTest;
 import event_class.Event;
 import event_class.EventList;
 import tflite.Classifier;
@@ -57,15 +60,18 @@ import tracking.MultiBoxTracker;
 import com.androidchils.odometer.Odometer;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 // import org.checkerframework.checker.units.qual.C;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -79,8 +85,8 @@ import java.util.concurrent.Executor;
 
 public class CameraVieActivity extends AppCompatActivity {
 
-    private Uri uri;
-    private File saved_pic;
+ 
+    private Date date;
 
     private ListenableFuture<ProcessCameraProvider> cameraProviderListenableFuture;
     private Button snap ;
@@ -94,14 +100,13 @@ public class CameraVieActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         initBox();
         setContentView(R.layout.camera_view);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
         if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED
         || checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED
         || checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
         {
             String[] permission = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
             requestPermissions(permission,1000);
-        }}
+        }
         snap = (Button) findViewById(R.id.snapview);
         input_btn =  findViewById(R.id.input_button);
         previewView = (PreviewView) findViewById(R.id.previewview);
@@ -111,9 +116,7 @@ public class CameraVieActivity extends AppCompatActivity {
             try {
                 ProcessCameraProvider cameraProvider = cameraProviderListenableFuture.get();
                 startCameraX(cameraProvider);
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
+            } catch (ExecutionException | InterruptedException e) {
                 e.printStackTrace();
             }
 
@@ -185,7 +188,7 @@ public class CameraVieActivity extends AppCompatActivity {
                         Toast.makeText(CameraVieActivity.this, "Photo has been saved successfully " , Toast.LENGTH_SHORT).show();
 
                         //uri = outputFileResults.getSavedUri();
-                        saved_pic = file;
+                        File saved_pic = file;
                         GetBitmapFromDir();
                     }
 
@@ -276,14 +279,12 @@ public class CameraVieActivity extends AppCompatActivity {
         }
     }
 
-    private boolean detectable;
     private String odometer;
 
     private void GetBitmapFromDir()
     {
 
         Bitmap image = null;
-        detectable = false;
 
         //image = MediaStore.Images.Media.getBitmap(this.getContentResolver(), dat);
         //sourceBitmap = image;
@@ -326,13 +327,11 @@ public class CameraVieActivity extends AppCompatActivity {
 //                      handleResult(cropBitmap, results);\
                     if (odo == "")
                     {
-                        detectable = false;
                         Toast.makeText(CameraVieActivity.this, "Error at detect, pls take another picture \n"+"Detect "+digits, Toast.LENGTH_SHORT).show();
 
                     }
                     else
                     {
-                        detectable = true;
                         odometer = odo;
                         //popup_alert();
                         popup_dialog("Odometer Detected:");
@@ -542,16 +541,7 @@ public class CameraVieActivity extends AppCompatActivity {
 
         builder.setView(input);
         builder.setPositiveButton(android.R.string.ok,
-                new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        write_save_file(a);
-
-
-                    }
-                });
+                (dialog, which) -> write_save_file(a));
         builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -585,19 +575,39 @@ public class CameraVieActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(LAST_RECORD_ODO, odometer);
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH);
-        String currentDateandTime = sdf.format(new Date());
-        editor.putString(LAST_RECORD_DATE, currentDateandTime);
 
 
-        Event new_event = new Event(a,currentDateandTime,odometer);
+        if (date==null)
+        {
+            date = new Date();
+        }
+        Date date_set = date;
+
+        editor.putString(LAST_RECORD_DATE, Utils.Date_to_String(date));
+
+
+        Event new_event = new Event(a,date_set,odometer);
         EventList eventList = init_list();
+        int dis,days;
+        if (a==1)
+        {
+            dis = sharedPreferences.getInt(On_Boa2.OCD,0);
+            days = sharedPreferences.getInt(On_Boa2.OCT,0);
+            new_event.setDistance(dis);
+            new_event.setDays(days);
+        }
+        if (a==2)
+        {
+            dis = sharedPreferences.getInt(On_Boa2.MTD,0);
+            days = sharedPreferences.getInt(On_Boa2.MTT,0);
+            new_event.setDistance(dis);
+            new_event.setDays(days);
+        }
         eventList.addEvent(new_event);
         Gson gson = new Gson();
         String json = gson.toJson(eventList);
 
         editor.putString(EVENT_LIST,json);
-
         editor.apply();
         Intent intent = new Intent(CameraVieActivity.this, MainActivity.class);
         startActivity(intent);
@@ -607,10 +617,11 @@ public class CameraVieActivity extends AppCompatActivity {
 
     public EventList init_list()
     {
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").create();;
+
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         String json = sharedPreferences.getString(EVENT_LIST,"");
-        Log.d("debug", "json init file\n" +json );
+
         EventList eventList;
         if (json=="")
         {eventList = new EventList();}
@@ -620,5 +631,32 @@ public class CameraVieActivity extends AppCompatActivity {
         }
         return eventList;
 
+    }
+    private DatePickerDialog datePickerDialog;
+    private void initDatePicker() {
+        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+
+                Calendar calendar = DateTest.Cal_Create(year,month,day);
+                date = calendar.getTime();
+            }
+        };
+
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+        int style = AlertDialog.THEME_HOLO_LIGHT;
+        datePickerDialog = new DatePickerDialog( this, style, dateSetListener , year , month , day);
+        datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+
+    }
+
+
+    public void OpenDatePicker3(View view)
+    {
+        initDatePicker();
+        datePickerDialog.show();
     }
 }

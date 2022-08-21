@@ -58,6 +58,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         holder.tvodo.setText(event.odo);
         holder.imageicon.setImageResource(event.getResourceid());
         holder.imageView.setImageResource(event.getStatus());
+
         // holder.imageView.setColorFilter(ContextCompat.getColor(holder.imageView.getContext(), R.color.gray), android.graphics.PorterDuff.Mode.MULTIPLY);
 
 

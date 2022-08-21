@@ -10,6 +10,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.util.Calendar;
+
+import env.Utils;
+import event_class.DateTest;
+import event_class.Event;
+import event_class.EventList;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link HomeFragment#newInstance} factory method to
@@ -49,6 +59,23 @@ public class HomeFragment extends Fragment {
         return fragment;
     }
 
+    public EventList init_list()
+    {
+        Gson gson =  new GsonBuilder().setDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").create();
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(MainActivity.SHARED_PREFS, this.getActivity().MODE_PRIVATE);
+        String json = sharedPreferences.getString(CameraVieActivity.EVENT_LIST,"");
+
+        EventList eventList;
+        if (json=="")
+        {eventList = new EventList();}
+        else
+        {
+            eventList = gson.fromJson(json,EventList.class);
+        }
+        return eventList;
+
+    }
+
     private TextView a1,a2;
     private TextView welcome;
 
@@ -81,6 +108,20 @@ public class HomeFragment extends Fragment {
         welcome = (TextView) returnView.findViewById(R.id.welcome_text);
         String name = sharedPreferences.getString(On_Boa1.NAME,"");
         welcome.setText("Welcome back, "+ name);
+
+        EventList eventList = init_list();
+        DateTest predictor = eventList.init_predict();
+
+        Calendar calendar = Calendar.getInstance();
+        String predict = Utils.formatstring(String.valueOf(predictor.predict_by_date(calendar))) ;
+        String today = Utils.Date_to_String(calendar.getTime());
+
+        TextView a3 = (TextView) returnView.findViewById(R.id.next_record_1);
+        TextView a4 = (TextView) returnView.findViewById(R.id.next_record_2);
+        a3.setText(predict);
+        a4.setText(today);
+
+
 
         return returnView;
     }

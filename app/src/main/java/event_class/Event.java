@@ -1,39 +1,47 @@
 package event_class;
 
+import android.util.Pair;
+
 import com.example.diary_oil_v3.R;
 
 import java.io.Serializable;
 import java.time.LocalTime;
 
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
 
+import env.Utils;
+
 
 public class Event implements Serializable {
+	private int inttype;
 	private int distance;
 	private int days;
-	private LocalTime due;
+	private Date due;
+
 	private String type;
 
 	public int getResourceid() {
 		return resourceid;
 	}
 
-	public void setResourceid(int resourceid) {
-		this.resourceid = resourceid;
-	}
+
+
 
 	private int resourceid;
 
 
 	private int status;
 
-	private Map<String, String> snapshot;
-	public String date, odo;
+	private Map<Date, Integer> snapshot;
+	public String odo;
+	public String date;
 
 
-	public Event(int type, String date, String odo) {
+	public Event(int type, Date date, String odo) {
 		String typename;
 		switch (type) {
 			case 0:
@@ -69,18 +77,33 @@ public class Event implements Serializable {
 		}
 
 		this.type = typename;
-		this.snapshot = new HashMap<String, String>();
-		;
-		this.snapshot.put(date, odo);
-		this.date = date;
+		this.inttype=type;
+		this.snapshot = new HashMap<Date, Integer>();
+		this.snapshot.put(date, Integer.valueOf(odo));
+
+		this.date = (Utils.Date_to_String(date));
 		this.odo = odo;
-		Random rand = new Random();
-		this.status = rand.nextInt(4);
+		if (type==0||type==3)
+		{
+			this.status=0;
+		}
+		else
+		{
+			this.status=3;
+		}
 
 
 	}
 
-	public void newSnapshot(String[] details) {
+	public Map.Entry<Date,Integer> Snap_date()
+	{
+		Iterator<Map.Entry<Date,Integer>> a =  snapshot.entrySet().iterator();
+		return a.next();
+
+	}
+
+	public void newSnapshot(Date date,Integer odo) {
+	this.snapshot.put(date,odo);
 
 	}
 
@@ -190,5 +213,13 @@ public class Event implements Serializable {
 		}
 
 
+	}
+
+	public int getInttype() {
+		return inttype;
+	}
+
+	public void setInttype(int inttype) {
+		this.inttype = inttype;
 	}
 }

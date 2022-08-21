@@ -16,6 +16,7 @@ import event_class.Event;
 public class ItemDetailActivity extends AppCompatActivity {
 
     private TextView tv1,tv2,ds,os;
+    private TextView tv3,tv4,tv5,tv6;
     private LinearLayout frameLayout;
     private Button button;
     private ImageView imageView;
@@ -39,6 +40,11 @@ public class ItemDetailActivity extends AppCompatActivity {
         });
         Event event = (Event) bundle.get("Object_item");
         frameLayout = findViewById(R.id.bg_color);
+        tv3 = findViewById(R.id.length);
+        tv4 = findViewById(R.id.distance);
+        tv5 = findViewById(R.id.tag1);
+        tv6 = findViewById(R.id.tag2);
+
 
         frameLayout.setBackgroundColor(getResources().getColor(event.getColor()));
         ds = findViewById(R.id.date_snap);
@@ -52,6 +58,14 @@ public class ItemDetailActivity extends AppCompatActivity {
         tv1.setText(event.getType());
         imageView = findViewById(R.id.status_i);
         imageView.setImageResource(event.getStatus());
+        if (event.getInttype()==2||event.getInttype()==1)
+        {
+            tv5.setVisibility(View.INVISIBLE);
+            tv6.setVisibility(View.INVISIBLE);
+            tv4.setText(Integer.toString(event.getDistance()));
+            tv3.setText(Integer.toString(event.getDays()));
+
+        }
 
     }
 }

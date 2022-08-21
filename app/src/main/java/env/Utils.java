@@ -8,12 +8,16 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.RectF;
+import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
 import android.graphics.Paint;
 
 //import org.tensorflow.lite.examples.detection.MainActivity;
 //import org.tensorflow.lite.examples.detection.tflite.Classifier;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -23,10 +27,17 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 public class Utils {
 
@@ -247,4 +258,32 @@ public class Utils {
 
         return a.substring(0,5);
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static Date asDate(LocalDate localDate) {
+        return Date.from(localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static Date asDate(LocalDateTime localDateTime) {
+        return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static LocalDate asLocalDate(Date date) {
+        return Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static LocalDateTime asLocalDateTime(Date date) {
+        return Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDateTime();
+    }
+
+    @NonNull
+    public static String Date_to_String(Date date)
+    {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH);
+        return sdf.format(date);
+    }
 }
+

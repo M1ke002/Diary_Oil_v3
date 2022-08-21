@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.util.List;
 
@@ -89,7 +90,7 @@ public class TimelineFragment extends Fragment {
     }
 
     private List<Event> getlistuser() {
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").create();
         SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(SHARED_PREFS, this.getActivity().MODE_PRIVATE);
         String json = sharedPreferences.getString(EVENT_LIST,"");
 
