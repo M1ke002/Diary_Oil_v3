@@ -1,20 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+     android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/event_color"
+        android:layout_width="20dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/timeline" />
+
+<RelativeLayout
     android:id="@+id/layout_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="10dp"
-    android:background="@color/white"
-    android:layout_marginTop="10dp"
+
+    android:layout_marginTop="20dp"
     android:layout_marginRight="10dp">
+
+
 
     <ImageView
         android:id="@+id/event_icon"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:src="@drawable/hero"
-        />
+        android:src="@drawable/hero" />
 
     <ImageView
         android:id="@+id/event_typeicon"
@@ -24,10 +38,8 @@
         android:layout_alignRight="@id/event_icon"
         android:layout_alignBottom="@id/event_icon"
         android:layout_marginEnd="20dp"
-        android:src="@drawable/ic_baseline_local_gas_station_24"
+        android:src="@drawable/ic_baseline_local_gas_station_24" />
 
-
-        />
 
 
     <LinearLayout
@@ -36,27 +48,30 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="0dp"
+        android:layout_marginTop="10dp"
         android:layout_toEndOf="@+id/event_icon"
         android:orientation="vertical">
+        <TextView
+            android:id="@+id/event_due"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+
+            android:layout_toRightOf="@+id/event_icon"
+            android:text="2nd Sun 2020"
+            android:textColor="@android:color/background_dark"
+            android:textSize="20sp"
+            android:textStyle="italic" />
 
         <TextView
             android:id="@+id/event_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="0dp"
             android:text="@string/app_name"
             android:textColor="@color/black"
             android:textSize="20dp"
             android:textStyle="bold"></TextView>
-
-        <TextView
-            android:id="@+id/event_due"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="2nd Sun 2020"
-            android:textColor="@android:color/background_dark"
-            android:textSize="15sp"
-            android:textStyle="italic" />
 
 
     </LinearLayout>
@@ -87,8 +102,5 @@ android:layout_marginTop="8dp"
         android:textStyle="bold" />
 
 
-
-
-
-
 </RelativeLayout>
+</FrameLayout>

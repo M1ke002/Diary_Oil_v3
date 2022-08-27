@@ -253,8 +253,179 @@
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/background_panel" />
+                android:layout_marginBottom="100dp"
+                android:background="@drawable/background_panel">
+
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="44dp"
+                    android:layout_marginTop="56dp"
+                    android:text="Pending Event"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
+
+                <RelativeLayout
+                    android:layout_width="321dp"
+                    android:layout_height="126dp"
+                    android:layout_below="@+id/textView6"
+                    android:layout_alignStart="@+id/textView6"
+                    android:layout_marginTop="160dp"
+                    android:background="@drawable/border"
+                    android:clickable="true"
+                    android:outlineAmbientShadowColor="@color/gray_dark">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="15dp"
+                        android:src="@drawable/group_19"
+
+
+                        />
+
+                    <TextView
+                        android:id="@+id/new_maintenance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="60dp"
+                        android:layout_marginTop="20dp"
+                        android:text="Maintenance"
+                        android:textColor="@color/black"
+                        android:textSize="20dp" />
+
+                    <TextView
+                        android:id="@+id/EstimatedDate2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/new_maintenance"
+                        android:layout_marginStart="60dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Estimated Date: "
+                        android:textColor="@color/gray"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/maindue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/new_maintenance"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_toEndOf="@+id/EstimatedDate2"
+                        android:text="22nd Sep 2022 "
+                        android:textColor="@color/gray_dark"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/Atkm2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/EstimatedDate2"
+                        android:layout_marginStart="60dp"
+                        android:layout_marginTop="10dp"
+                        android:text="At (km): "
+                        android:textColor="@color/gray"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/mainkm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/maindue"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_toEndOf="@+id/EstimatedDate2"
+                        android:text="27000 "
+                        android:textColor="@color/gray_dark"
+                        android:textSize="14dp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="321dp"
+                    android:layout_height="126dp"
+                    android:layout_below="@+id/textView6"
+                    android:layout_alignStart="@+id/textView6"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/border"
+                    android:clickable="true"
+                    android:outlineAmbientShadowColor="@color/gray_dark">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="15dp"
+                        android:src="@drawable/group_18"
+
+
+                        />
+
+                    <TextView
+                        android:id="@+id/oil_change"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="60dp"
+                        android:layout_marginTop="20dp"
+                        android:text="Oil Change"
+                        android:textColor="@color/black"
+                        android:textSize="20dp" />
+
+                    <TextView
+                        android:id="@+id/EstimatedDate1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/oil_change"
+                        android:layout_marginStart="60dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Estimated Date: "
+                        android:textColor="@color/gray"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/oildue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/oil_change"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_toEndOf="@+id/EstimatedDate1"
+                        android:text="22nd Sep 2022 "
+                        android:textColor="@color/gray_dark"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/Atkm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/EstimatedDate1"
+                        android:layout_marginStart="60dp"
+                        android:layout_marginTop="10dp"
+                        android:text="At (km): "
+                        android:textColor="@color/gray"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/oilkm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/oildue"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_toEndOf="@+id/EstimatedDate1"
+                        android:text="27000 "
+                        android:textColor="@color/gray_dark"
+                        android:textSize="14dp" />
+
+                </RelativeLayout>
+            </RelativeLayout>
 
         </LinearLayout>
+
     </ScrollView>
 </FrameLayout>

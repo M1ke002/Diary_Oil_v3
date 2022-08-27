@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,6 +71,7 @@ public class HomeFragment extends Fragment {
         {eventList = new EventList();}
         else
         {
+            Log.e("234",json);
             eventList = gson.fromJson(json,EventList.class);
         }
         return eventList;
@@ -101,26 +103,38 @@ public class HomeFragment extends Fragment {
         SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(MainActivity.SHARED_PREFS, this.getActivity().MODE_PRIVATE);
         String o1 = sharedPreferences.getString(CameraVieActivity.LAST_RECORD_ODO,"");
         String o2 = sharedPreferences.getString(CameraVieActivity.LAST_RECORD_DATE,"");
-        a1 = (TextView) returnView.findViewById(R.id.last_record_1);
-        a2 = (TextView) returnView.findViewById(R.id.last_record_2);
-        a1.setText(o1);
-        a2.setText(o2);
-        welcome = (TextView) returnView.findViewById(R.id.welcome_text);
-        String name = sharedPreferences.getString(On_Boa1.NAME,"");
-        welcome.setText("Welcome back, "+ name);
+        if (o1!="") {
+            a1 = (TextView) returnView.findViewById(R.id.last_record_1);
+            a2 = (TextView) returnView.findViewById(R.id.last_record_2);
+            a1.setText(o1);
+            a2.setText(o2);
+            welcome = (TextView) returnView.findViewById(R.id.welcome_text);
+            String name = sharedPreferences.getString(On_Boa1.NAME, "");
+            welcome.setText("Welcome back, " + name);
 
-        EventList eventList = init_list();
-        DateTest predictor = eventList.init_predict();
+            EventList eventList = init_list();
+            DateTest predictor = eventList.init_predict();
 
-        Calendar calendar = Calendar.getInstance();
-        String predict = Utils.formatstring(String.valueOf(predictor.predict_by_date(calendar))) ;
-        String today = Utils.Date_to_String(calendar.getTime());
+            Calendar calendar = Calendar.getInstance();
+            String predict = Utils.formatstring(String.valueOf(predictor.predict_by_date(calendar)));
+            String today = Utils.Date_to_String(calendar.getTime());
+            Event pendoil = eventList.getPendingOil();
+            Event penmain = eventList.getPendingMain();
+            TextView textView = returnView.findViewById(R.id.oildue);
+            textView.setText(Utils.Date_to_String(pendoil.getDue()));
+            TextView textView1 = returnView.findViewById(R.id.oilkm);
+            Log.e("234",pendoil.CalgetDue().getTime().toString());
+            textView1.setText(predictor.predict_by_date(pendoil.CalgetDue()));
+            TextView textView2 = returnView.findViewById(R.id.maindue);
+            textView2.setText(Utils.Date_to_String(penmain.getDue()));
+            TextView textView3 = returnView.findViewById(R.id.mainkm);
+            textView3.setText(predictor.predict_by_date(penmain.CalgetDue()));
 
-        TextView a3 = (TextView) returnView.findViewById(R.id.next_record_1);
-        TextView a4 = (TextView) returnView.findViewById(R.id.next_record_2);
-        a3.setText(predict);
-        a4.setText(today);
-
+            TextView a3 = (TextView) returnView.findViewById(R.id.next_record_1);
+            TextView a4 = (TextView) returnView.findViewById(R.id.next_record_2);
+            a3.setText(predict);
+            a4.setText(today);
+        }
 
 
         return returnView;

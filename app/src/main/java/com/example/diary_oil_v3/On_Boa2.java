@@ -4,11 +4,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.ArrayList;
 
 public class On_Boa2 extends AppCompatActivity {
 
@@ -16,6 +21,7 @@ public class On_Boa2 extends AppCompatActivity {
     private Button btn2;
     private EditText OilChangeDis,OilChangeTime;
     private EditText MaintenanceDis,MaintenanceTime;
+    private Spinner spinner;
     private int o1,o2,m1,m2;
     public static final String SHARED_PREFS = "sharedPrefs";
     public static final String OCD = "oilchangedis";
@@ -31,6 +37,35 @@ public class On_Boa2 extends AppCompatActivity {
         OilChangeTime = (EditText) findViewById(R.id.editTextOilChangeTime);
         MaintenanceDis = (EditText) findViewById(R.id.editTextMaintenanceDis);
         MaintenanceTime = (EditText) findViewById(R.id.editTextMaintenanceTime);
+        spinner = (Spinner) findViewById(R.id.autoCompleteTextView4);
+        final ArrayList<String> arraypreset= new ArrayList<String>();
+        arraypreset.add("Default");
+        arraypreset.add("SH Mode");
+        arraypreset.add("Wave");
+        arraypreset.add("Vision");
+
+        ArrayAdapter arrayAdapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_spinner_item,arraypreset);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(arrayAdapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i==0)
+                {
+
+                    select_preset(1000,90,1500,120);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                select_preset(1000,90,1500,120);
+
+            }
+        });
+
+
+
 
         btn1 = (Button) findViewById(R.id.next_btn_2);
         btn1.setOnClickListener(new View.OnClickListener() {
@@ -111,5 +146,13 @@ public class On_Boa2 extends AppCompatActivity {
         {MaintenanceTime.setText(Integer.toString(m2));}
 
 
+    }
+
+    public void select_preset(int a, int b, int c, int d)
+    {
+        OilChangeDis.setText(Integer.toString(a));
+        OilChangeTime.setText(Integer.toString(b));
+        MaintenanceDis.setText(Integer.toString(c));
+        MaintenanceTime.setText(Integer.toString(d));
     }
 }

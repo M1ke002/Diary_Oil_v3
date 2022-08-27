@@ -58,6 +58,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         holder.tvodo.setText(event.odo);
         holder.imageicon.setImageResource(event.getResourceid());
         holder.imageView.setImageResource(event.getStatus());
+        holder.timeline.setImageResource(event.getColor());
 
         // holder.imageView.setColorFilter(ContextCompat.getColor(holder.imageView.getContext(), R.color.gray), android.graphics.PorterDuff.Mode.MULTIPLY);
 
@@ -81,7 +82,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
 
     public class EventViewHolder extends RecyclerView.ViewHolder{
 
-        private ImageView imageView,imageicon;
+        private ImageView imageView,imageicon,timeline;
         private TextView tvname,tvdue,tvodo;
         public RelativeLayout relativeLayout;
 
@@ -94,6 +95,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
             tvname = itemView.findViewById(R.id.event_name);
             tvdue = itemView.findViewById(R.id.event_due);
             tvodo = itemView.findViewById(R.id.event_odo);
+            timeline = itemView.findViewById(R.id.timeline);
 
         }
     }

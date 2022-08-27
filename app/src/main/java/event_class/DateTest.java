@@ -83,4 +83,12 @@ public class DateTest {
         return instance;
 
     }
+
+    public static Calendar Cal_Create2(Date date)
+    {
+        Calendar instance = Calendar.getInstance();
+        instance.setTime(date);
+        return instance;
+
+    }
 }

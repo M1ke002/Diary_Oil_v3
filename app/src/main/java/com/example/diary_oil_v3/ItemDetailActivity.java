@@ -53,12 +53,15 @@ public class ItemDetailActivity extends AppCompatActivity {
         os.setText(event.odo);
         TextView a = findViewById(R.id.status_name);
         a.setText(event.getStatusName());
-
+        TextView textView = findViewById(R.id.finish_date);
+        textView.setText(event.date);
+        TextView textView2 = findViewById(R.id.due);
+        textView2.setText(event.date);
         tv1 = findViewById(R.id.textView10);
         tv1.setText(event.getType());
         imageView = findViewById(R.id.status_i);
         imageView.setImageResource(event.getStatus());
-        if (event.getInttype()==2||event.getInttype()==1)
+        if (event.getInttype()==0||event.getInttype()==3)
         {
             tv5.setVisibility(View.INVISIBLE);
             tv6.setVisibility(View.INVISIBLE);

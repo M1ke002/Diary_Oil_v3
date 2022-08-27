@@ -27,6 +27,7 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -259,22 +260,18 @@ public class Utils {
         return a.substring(0,5);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public static Date asDate(LocalDate localDate) {
         return Date.from(localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public static Date asDate(LocalDateTime localDateTime) {
         return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public static LocalDate asLocalDate(Date date) {
         return Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public static LocalDateTime asLocalDateTime(Date date) {
         return Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDateTime();
     }
@@ -285,5 +282,21 @@ public class Utils {
         SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH);
         return sdf.format(date);
     }
+
+    public static Date date_format(Date v)
+    {
+
+        try {
+            SimpleDateFormat sdf2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy",Locale.ENGLISH);
+            v = sdf2.parse(sdf2.format(v));
+
+
+        } catch (ParseException ex) {
+            ex.printStackTrace();
+        }
+
+        return v;
+    }
+
 }
 

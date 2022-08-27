@@ -1,5 +1,6 @@
 package event_class;
 
+import android.util.Log;
 import android.util.Pair;
 
 import com.example.diary_oil_v3.R;
@@ -7,6 +8,7 @@ import com.example.diary_oil_v3.R;
 import java.io.Serializable;
 import java.time.LocalTime;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -20,7 +22,7 @@ public class Event implements Serializable {
 	private int inttype;
 	private int distance;
 	private int days;
-	private Date due;
+	private Calendar due;
 
 	private String type;
 
@@ -36,6 +38,10 @@ public class Event implements Serializable {
 
 	private int status;
 
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
 	private Map<Date, Integer> snapshot;
 	public String odo;
 	public String date;
@@ -47,29 +53,33 @@ public class Event implements Serializable {
 			case 0:
 				typename = "Record";
 				this.resourceid = R.drawable.ic_baseline_photo_camera_24;
+				this.status=0;
 				break;
 
 			case 1:
 				typename = "Oil Change";
 				this.resourceid = R.drawable.oil;
+				this.status=3;
 				break;
 
 			case 2:
 				typename = "Maintenance";
 				this.resourceid = R.drawable.main;
+				this.status=3;
 
 				break;
 
 			case 3:
 				typename = "Fuel Change";
 				this.resourceid = R.drawable.ic_baseline_local_gas_station_24;
-
+				this.status=0;
 				break;
 
 
 			default:
 				typename = "How do you get this ?";
 				this.resourceid = R.drawable.hero;
+				this.status=0;
 
 				break;
 
@@ -80,35 +90,35 @@ public class Event implements Serializable {
 		this.inttype=type;
 		this.snapshot = new HashMap<Date, Integer>();
 		this.snapshot.put(date, Integer.valueOf(odo));
-
-		this.date = (Utils.Date_to_String(date));
 		this.odo = odo;
-		if (type==0||type==3)
-		{
-			this.status=0;
-		}
-		else
-		{
-			this.status=3;
-		}
+		this.date = (Utils.Date_to_String(date));
+
 
 
 	}
 
-	public Map.Entry<Date,Integer> Snap_date()
+	public Iterator<Map.Entry<Date,Integer>> Snap_date()
 	{
 		Iterator<Map.Entry<Date,Integer>> a =  snapshot.entrySet().iterator();
-		return a.next();
+		return a;
 
 	}
 
 	public void newSnapshot(Date date,Integer odo) {
 	this.snapshot.put(date,odo);
 
+
 	}
 
-	public void update() {
 
+	public void update_due(Date date) {
+	this.due=DateTest.Cal_Create2(date);
+
+
+	}
+	public void clear_snap()
+	{
+		this.snapshot= new HashMap<Date, Integer>();
 	}
 
 	public int getDistance() {
@@ -221,5 +231,12 @@ public class Event implements Serializable {
 
 	public void setInttype(int inttype) {
 		this.inttype = inttype;
+	}
+
+	public Date getDue() {
+		return due.getTime();
+	}
+	public Calendar CalgetDue() {
+		return due;
 	}
 }

@@ -67,7 +67,7 @@
         android:textColorHint="@color/gray_dark"
         android:drawableTint="@color/Theme_second"
         android:ems="10"
-        android:hint="months"
+        android:hint="days"
         android:inputType="number"
 
         android:minHeight="48dp"
@@ -81,14 +81,14 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="168dp"
         android:layout_marginBottom="15dp"
-        android:text="Time for oil change (months)"
+        android:text="Time for oil change (days)"
         android:textColor="@color/Theme_second"
         android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/editTextOilChangeTime"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="47dp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextOilChangeDis"
         app:layout_constraintVertical_bias="1.0" />
 
@@ -188,7 +188,7 @@
         android:textColorHint="@color/gray_dark"
         android:drawableTint="@color/Theme_second"
         android:ems="10"
-        android:hint="months"
+        android:hint="days"
         android:inputType="number"
 
         android:minHeight="48dp"
@@ -203,15 +203,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
-        android:layout_marginEnd="152dp"
+        android:layout_marginStart="47dp"
         android:layout_marginBottom="10dp"
 
-        android:text="Time for maintenance (months)"
+        android:text="Time for maintenance (days)"
         android:textColor="@color/Theme_second"
         android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/editTextMaintenanceTime"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextMaintenanceDis"
         app:layout_constraintVertical_bias="0.0" />
 
@@ -227,11 +227,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView7">
 
-        <Spinner
+        <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/autoCompleteTextView4"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+
             android:outlineSpotShadowColor="@color/Theme"
             android:theme="@style/Platform.MaterialComponents.Light"
             android:popupBackground="@drawable/text_field"

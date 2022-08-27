@@ -66,6 +66,7 @@ import com.google.gson.GsonBuilder;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -584,11 +585,13 @@ public class CameraVieActivity extends AppCompatActivity {
         Date date_set = date;
 
         editor.putString(LAST_RECORD_DATE, Utils.Date_to_String(date));
+        editor.apply();
 
 
         Event new_event = new Event(a,date_set,odometer);
         EventList eventList = init_list();
         int dis,days;
+
         if (a==1)
         {
             dis = sharedPreferences.getInt(On_Boa2.OCD,0);
@@ -603,6 +606,7 @@ public class CameraVieActivity extends AppCompatActivity {
             new_event.setDistance(dis);
             new_event.setDays(days);
         }
+        Log.e("eor",new_event.odo);
         eventList.addEvent(new_event);
         Gson gson = new Gson();
         String json = gson.toJson(eventList);
@@ -620,11 +624,61 @@ public class CameraVieActivity extends AppCompatActivity {
         Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").create();;
 
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        String date = sharedPreferences.getString(LAST_RECORD_DATE,"");
+        String odo = sharedPreferences.getString(LAST_RECORD_ODO,"");
         String json = sharedPreferences.getString(EVENT_LIST,"");
+        String lo = sharedPreferences.getString(On_Boa3.LO,"");
+        if (lo=="")
+        {
+            lo=date;
+
+        }
+        String lm = sharedPreferences.getString(On_Boa3.LM,"");
+        if (lm=="")
+        {
+            lm=date;
+
+        }
+        Date date1=null;
+        Date date2=null;
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy",Locale.ENGLISH);
+        SimpleDateFormat sdf2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy",Locale.ENGLISH);
+        try {
+            date1 = sdf.parse(lo);
+            date1 = sdf2.parse(sdf2.format(date1));
+            Log.e("vd",date1.toString());
+            date2 = sdf.parse(lm);
+            date2 = sdf2.parse(sdf2.format(date2));
+            Log.e("vd",date2.toString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+
+        }
+
+
+
+
+
+
+
+
 
         EventList eventList;
         if (json=="")
-        {eventList = new EventList();}
+        {eventList = new EventList();
+            eventList.setPendingOil(new Event(1,date1,odo));
+            eventList.getPendingOil().update_due(Utils.date_format(date1));
+            eventList.getPendingOil().setDays(sharedPreferences.getInt(On_Boa2.OCD,0));
+            eventList.getPendingOil().setDistance(sharedPreferences.getInt(On_Boa2.OCT,0));
+            eventList.getPendingOil().clear_snap();
+            eventList.setPendingMain(new Event(2,date2,odo));
+            Log.e("2345",date2.toString());
+            eventList.getPendingMain().update_due(Utils.date_format(date2));
+            eventList.getPendingMain().setDays(sharedPreferences.getInt(On_Boa2.MTD,0));
+            eventList.getPendingMain().setDistance(sharedPreferences.getInt(On_Boa2.MTT,0));
+            eventList.getPendingMain().clear_snap();
+
+        }
         else
         {
             eventList = gson.fromJson(json,EventList.class);
