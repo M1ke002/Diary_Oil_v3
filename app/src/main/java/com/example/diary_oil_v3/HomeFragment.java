@@ -1,5 +1,6 @@
 package com.example.diary_oil_v3;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -115,28 +117,70 @@ public class HomeFragment extends Fragment {
             EventList eventList = init_list();
             DateTest predictor = eventList.init_predict();
 
+
             Calendar calendar = Calendar.getInstance();
             String predict = Utils.formatstring(String.valueOf(predictor.predict_by_date(calendar)));
+            Log.e("Predictor pane",predictor.toString());
+            Log.e("Predictor pane",calendar.getTime().toString());
+            Log.e("Predictor pane",predict);
+
             String today = Utils.Date_to_String(calendar.getTime());
             Event pendoil = eventList.getPendingOil();
             Event penmain = eventList.getPendingMain();
+            pendoil.updateStatus();
+            penmain.updateStatus();
+
             TextView textView = returnView.findViewById(R.id.oildue);
             textView.setText(Utils.Date_to_String(pendoil.getDue()));
             TextView textView1 = returnView.findViewById(R.id.oilkm);
             Log.e("234",pendoil.CalgetDue().getTime().toString());
-            textView1.setText(predictor.predict_by_date(pendoil.CalgetDue()));
+            textView1.setText(String.valueOf(predictor.predict_by_date(pendoil.CalgetDue())));
+            Log.e("cum2",penmain.CalgetDue().getTime().toString());
+            Log.e("Predictor pane",String.valueOf(predictor.predict_by_date(penmain.CalgetDue())));
             TextView textView2 = returnView.findViewById(R.id.maindue);
             textView2.setText(Utils.Date_to_String(penmain.getDue()));
             TextView textView3 = returnView.findViewById(R.id.mainkm);
-            textView3.setText(predictor.predict_by_date(penmain.CalgetDue()));
+            textView3.setText(String.valueOf(predictor.predict_by_date(penmain.CalgetDue())));
 
             TextView a3 = (TextView) returnView.findViewById(R.id.next_record_1);
             TextView a4 = (TextView) returnView.findViewById(R.id.next_record_2);
             a3.setText(predict);
             a4.setText(today);
+            RelativeLayout relativeLayout = returnView.findViewById(R.id.pendingoil);
+            relativeLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onClickGoToDetail(pendoil);
+                }
+            });
+            RelativeLayout relativeLayout2 = returnView.findViewById(R.id.pendingmain);
+            relativeLayout2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onClickGoToDetail(penmain);
+                }
+            });
+
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            Gson gson = new Gson();
+            String json = gson.toJson(eventList);
+            editor.putString(CameraVieActivity.EVENT_LIST,json);
+            editor.apply();
         }
 
 
+
         return returnView;
+    }
+
+
+    private void onClickGoToDetail(Event event) {
+        Intent intent = new Intent(this.getContext(),ItemDetailActivity.class);
+        Bundle bundle = new Bundle();
+        // TODO: remove this
+
+        bundle.putSerializable("Object_item",event);
+        intent.putExtras(bundle);
+        this.getContext().startActivity(intent);
     }
 }

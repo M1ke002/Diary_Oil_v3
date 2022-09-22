@@ -3,6 +3,7 @@ package com.example.diary_oil_v3;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -95,7 +96,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
             tvname = itemView.findViewById(R.id.event_name);
             tvdue = itemView.findViewById(R.id.event_due);
             tvodo = itemView.findViewById(R.id.event_odo);
-            timeline = itemView.findViewById(R.id.timeline);
+            timeline = itemView.findViewById(R.id.event_color);
 
         }
     }

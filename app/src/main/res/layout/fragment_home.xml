@@ -25,7 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-
+                android:fontFamily="@font/grgaref"
                 android:clickable="false"
 
                 android:paddingTop="30dp"
@@ -269,6 +269,7 @@
                     android:textStyle="bold" />
 
                 <RelativeLayout
+                    android:id="@+id/pendingmain"
                     android:layout_width="321dp"
                     android:layout_height="126dp"
                     android:layout_below="@+id/textView6"
@@ -347,6 +348,7 @@
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/pendingoil"
                     android:layout_width="321dp"
                     android:layout_height="126dp"
                     android:layout_below="@+id/textView6"

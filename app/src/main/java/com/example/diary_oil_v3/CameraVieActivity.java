@@ -668,16 +668,15 @@ public class CameraVieActivity extends AppCompatActivity {
         {eventList = new EventList();
             eventList.setPendingOil(new Event(1,date1,odo));
             eventList.getPendingOil().update_due(Utils.date_format(date1));
-            eventList.getPendingOil().setDays(sharedPreferences.getInt(On_Boa2.OCD,0));
-            eventList.getPendingOil().setDistance(sharedPreferences.getInt(On_Boa2.OCT,0));
+            eventList.getPendingOil().setDays(sharedPreferences.getInt(On_Boa2.OCT,0));
+            eventList.getPendingOil().setDistance(sharedPreferences.getInt(On_Boa2.OCD,0));
             eventList.getPendingOil().clear_snap();
             eventList.setPendingMain(new Event(2,date2,odo));
-            Log.e("2345",date2.toString());
-            eventList.getPendingMain().update_due(Utils.date_format(date2));
-            eventList.getPendingMain().setDays(sharedPreferences.getInt(On_Boa2.MTD,0));
-            eventList.getPendingMain().setDistance(sharedPreferences.getInt(On_Boa2.MTT,0));
-            eventList.getPendingMain().clear_snap();
 
+            eventList.getPendingMain().update_due(Utils.date_format(date2));
+            eventList.getPendingMain().setDays(sharedPreferences.getInt(On_Boa2.MTT,0));
+            eventList.getPendingMain().setDistance(sharedPreferences.getInt(On_Boa2.MTD,0));
+            eventList.getPendingMain().clear_snap();
         }
         else
         {

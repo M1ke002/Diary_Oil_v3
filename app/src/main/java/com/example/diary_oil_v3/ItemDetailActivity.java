@@ -2,15 +2,25 @@ package com.example.diary_oil_v3;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.Date;
+import java.util.Iterator;
+import java.util.Map;
+
+import env.Utils;
 import event_class.Event;
 
 public class ItemDetailActivity extends AppCompatActivity {
@@ -65,8 +75,48 @@ public class ItemDetailActivity extends AppCompatActivity {
         {
             tv5.setVisibility(View.INVISIBLE);
             tv6.setVisibility(View.INVISIBLE);
+            tv4.setVisibility(View.INVISIBLE);
+            tv3.setVisibility(View.INVISIBLE);
+
+        }
+        else
+        {
             tv4.setText(Integer.toString(event.getDistance()));
             tv3.setText(Integer.toString(event.getDays()));
+            textView2.setText(Utils.Date_to_String(event.getDue()));
+            textView.setText(Utils.Date_to_String(event.getDue()));
+            textView2.setTextColor(getColor(event.getColor()));
+            ds.setVisibility(View.INVISIBLE);
+            os.setVisibility(View.INVISIBLE);
+            GridLayout gridLayout = findViewById(R.id.grid_snapshot);
+            Iterator<Map.Entry<Date,Integer>> snap = event.Snap_date();
+            while (snap.hasNext()) {
+
+                Map.Entry<Date,Integer> vf = snap.next();
+
+                String date = Utils.Date_to_String(vf.getKey()) ;
+                String odo = vf.getValue().toString();
+                Log.e("2345",date +"\n"+odo);
+                TextView textView1 = new TextView(this.getApplicationContext());
+                textView1.setText(date);
+                textView1.setTypeface(null, Typeface.BOLD);
+                textView1.setTextColor(Color.parseColor("#000000"));
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                params.setMargins(60,10,0,0);
+                textView1.setLayoutParams(params);
+
+                TextView textView3 = new TextView(this.getApplicationContext());
+                textView3.setText(odo);
+                textView3.setTextColor(Color.parseColor("#63666A"));
+                LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                params2.setMargins(520,10,200,0);
+                params2.gravity = Gravity.END;
+                textView3.setGravity(Gravity.RIGHT);
+                textView3.setLayoutParams(params2);
+                gridLayout.addView(textView1);
+                gridLayout.addView(textView3);
+            }
+
 
         }
 

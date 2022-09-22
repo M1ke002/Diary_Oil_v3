@@ -8,6 +8,7 @@
         <entry key="..\:/Diary_oil/Diary_Oil_v4/app/src/main/res/drawable/details_panel.xml" value="0.1635" />
         <entry key="..\:/Diary_oil/Diary_Oil_v4/app/src/main/res/drawable/group3scale.xml" value="0.156" />
         <entry key="..\:/Diary_oil/Diary_Oil_v4/app/src/main/res/drawable/ic_baseline_edit_24.xml" value="0.1635" />
+        <entry key="..\:/Diary_oil/Diary_Oil_v4/app/src/main/res/drawable/ic_baseline_perm_contact_calendar_24.xml" value="0.14" />
         <entry key="..\:/Diary_oil/Diary_Oil_v4/app/src/main/res/drawable/ic_person.xml" value="0.1865" />
         <entry key="..\:/Diary_oil/Diary_Oil_v4/app/src/main/res/drawable/purple_bg_panel.xml" value="0.1915" />
         <entry key="..\:/Diary_oil/Diary_Oil_v4/app/src/main/res/drawable/record_icon.xml" value="0.155" />
@@ -22,7 +23,8 @@
         <entry key="..\:/Diary_oil/Diary_Oil_v4/app/src/main/res/layout/confirm_dialog.xml" value="0.13125" />
         <entry key="..\:/Diary_oil/Diary_Oil_v4/app/src/main/res/layout/event_item.xml" value="0.2" />
         <entry key="..\:/Diary_oil/Diary_Oil_v4/app/src/main/res/layout/fragment_home.xml" value="0.1992121553179516" />
-        <entry key="..\:/Diary_oil/Diary_Oil_v4/app/src/main/res/layout/fragment_setting.xml" value="0.14635416666666667" />
+        <entry key="..\:/Diary_oil/Diary_Oil_v4/app/src/main/res/layout/fragment_profile.xml" value="0.12355707567336469" />
+        <entry key="..\:/Diary_oil/Diary_Oil_v4/app/src/main/res/layout/fragment_setting.xml" value="0.2" />
         <entry key="..\:/Diary_oil/Diary_Oil_v4/app/src/main/res/layout/fragment_timeline.xml" value="0.13229166666666667" />
         <entry key="..\:/Diary_oil/Diary_Oil_v4/app/src/main/res/layout/image_layout.xml" value="0.12013681060282172" />
         <entry key="..\:/Diary_oil/Diary_Oil_v4/app/src/main/res/layout/onboa.xml" value="0.184375" />

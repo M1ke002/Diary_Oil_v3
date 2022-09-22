@@ -7,10 +7,11 @@
 
     <ImageView
         android:id="@+id/event_color"
+        android:visibility="visible"
         android:layout_width="20dp"
         android:layout_height="100dp"
         android:layout_marginStart="35dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="00dp"
         android:src="@drawable/timeline" />
 
 <RelativeLayout
@@ -19,7 +20,7 @@
     android:layout_height="wrap_content"
     android:padding="10dp"
 
-    android:layout_marginTop="20dp"
+    android:layout_marginTop="00dp"
     android:layout_marginRight="10dp">
 
 

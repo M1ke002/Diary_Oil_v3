@@ -5,6 +5,9 @@ package event_class;
 
 
 
+import android.util.Log;
+
+import java.time.Duration;
 import java.util.*;
 
 public class DateTest {
@@ -15,11 +18,22 @@ public class DateTest {
 
 
     public void add_data(Calendar dates, int odometers) {
-        Calendar cal = dates;
         dates_list.add(dates);
-        long period = dates.getTime().getTime() - dates_list.get(0).getTime().getTime();
-        long period_processed = period / (1000 * 60 * 60 * 24);
-        System.out.println(intervals_list.toString());
+        Calendar cal = dates_list.get(0);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND,0);
+        dates.set(Calendar.HOUR_OF_DAY, 0);
+        dates.set(Calendar.MINUTE, 0);
+        dates.set(Calendar.SECOND, 0);
+        dates.set(Calendar.MILLISECOND,0);
+
+
+
+
+
+        long period_processed = Duration.between(cal.toInstant(), dates.toInstant()).toDays();
 
         intervals_list.add((int) period_processed);
         double[] x = intervals_list.stream().mapToDouble(i -> i).toArray();
@@ -31,7 +45,7 @@ public class DateTest {
     }
 
     public int predict_by_date(Calendar date) {
-        double odo_predict;
+        double odo_predict = 0;
         try{
         long interval = (date.getTime().getTime() - dates_list.get(0).getTime().getTime()) / (1000 * 60 * 60 * 24);
         odo_predict = (slope * interval) + intercept;}
@@ -44,11 +58,13 @@ public class DateTest {
 
     public Calendar predicted_by_odometer(int odometer) {
         double interval = (odometer - intercept)/slope;
-        Calendar cal = dates_list.get(0);
+        Calendar cal = (Calendar) dates_list.get(0).clone();
         cal.add(Calendar.DATE, (int)interval);
         return cal;
 
     }
+
+
 
 /**
     public static void main(String[] args) {
@@ -76,10 +92,14 @@ public class DateTest {
     }
  */
 
+    public String toString()
+    {
+        return (intervals_list .toString() +"\n" + odometers_list.toString());
+    }
     public static Calendar Cal_Create(int year, int month, int day)
     {
         Calendar instance = Calendar.getInstance();
-        instance.set(year,month,day);
+        instance.set(year,month-1,day);
         return instance;
 
     }
@@ -90,5 +110,10 @@ public class DateTest {
         instance.setTime(date);
         return instance;
 
+    }
+
+    public int get_last_odo()
+    {
+        return odometers_list.get(odometers_list.size()-1);
     }
 }

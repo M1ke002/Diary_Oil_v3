@@ -25,6 +25,7 @@
             android:scaleY=".9"
             android:drawableTint="@color/white"
             android:paddingStart="20dp"
+            android:paddingEnd="20dp"
             android:layout_marginTop="10dp"
 
 
@@ -33,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Details about"
-            android:textSize="25dp"
+            android:textSize="25sp"
             android:textColor="@color/white"
             android:fontFamily="sans-serif"
             android:layout_marginStart="25dp"
@@ -45,7 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Oil Change #3"
-            android:textSize="30dp"
+            android:textSize="30sp"
             android:textColor="@color/white"
             android:fontFamily="sans-serif"
             android:layout_marginStart="25dp"
@@ -69,7 +70,7 @@
                 android:text="Details: "
                 android:textColor="@color/gray_dark"
                 android:textStyle="bold"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="20dp"
 
@@ -81,13 +82,15 @@
                 android:text="Snapshot "
                 android:textColor="@color/gray_dark"
                 android:textStyle="italic"
-                android:textSize="15dp"
+                android:textSize="15sp"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="2dp"
                 />
             <GridLayout
+                android:id="@+id/grid_snapshot"
                 android:layout_width="match_parent"
                 android:layout_height="220dp"
+                android:isScrollContainer="true"
                 android:columnCount="2"
                 android:rowCount="2">
                 <TextView
@@ -104,7 +107,7 @@
                     android:id="@+id/odo_snap"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
+                    android:layout_gravity="end"
                     android:textColor="@color/gray_dark"
 
                     android:layout_marginTop="10dp"
@@ -146,7 +149,7 @@
                     android:layout_marginEnd="20dp"
                     android:textColor="@color/black"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
+                    android:layout_gravity="end"
                     android:text="60" />
 
                 <TextView
@@ -165,7 +168,7 @@
                     android:layout_marginEnd="20dp"
                     android:textColor="@color/black"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
+                    android:layout_gravity="end"
 
                     android:text="1000" />
 
@@ -177,7 +180,7 @@
                     android:layout_marginStart="20dp"
                     android:textStyle="bold"
                     android:textColor="@color/black"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
 
                     android:text="Recommend Date:" />
 
@@ -188,10 +191,10 @@
                     android:layout_marginEnd="20dp"
 
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
+                    android:layout_gravity="end"
                     android:textStyle="bold"
                     android:textColor="@color/Theme"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
 
                     android:text="20th May 2021" />
             </GridLayout>
@@ -215,7 +218,7 @@
                 android:layout_marginTop="15dp"
                 android:text="Completed"
                 android:textColor="@color/black"
-                android:textSize="20dp"
+                android:textSize="20sp"
 
                 android:textStyle="bold" />
 
@@ -224,7 +227,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:textSize="15dp"
+                android:textSize="15sp"
                 android:layout_marginStart="20dp"
                 android:layout_below="@+id/status_name"
                 android:textColor="@color/gray"
@@ -235,7 +238,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:textSize="15dp"
+                android:textSize="15sp"
                 android:layout_marginStart="20dp"
                 android:layout_below="@+id/date_name"
                 android:textColor="@color/gray_dark"

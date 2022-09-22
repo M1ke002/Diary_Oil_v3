@@ -47,8 +47,11 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     implementation 'com.google.android.material:material:1.7.0-alpha02'
     //noinspection GradleCompatible
+    implementation "com.android.support:support-compat:27.1.1"
+    //noinspection GradleCompatible
     androidTestImplementation 'com.android.support.test:rules:1.0.2'
     androidTestImplementation 'com.google.truth:truth:1.0.1'
+    implementation 'com.github.AnyChart:AnyChart-Android:1.1.2'
 
 
     def cameraxVersion = "1.2.0-alpha03"

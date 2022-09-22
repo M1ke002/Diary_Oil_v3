@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Locale;
@@ -45,116 +46,22 @@ public class EventList {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
 		predictor.add_data(calendar,odo);
+		Log.e("Predictor after adding event",predictor.toString());
 
-		Calendar calendar1 = predictor.predicted_by_odometer(PendingOil.getDistance()+odo);
-		String sDate1=PendingOil.date;
-		Log.e("eor",sDate1);
-		Date date1= null;
-		SimpleDateFormat sdf= new SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH);
-		SimpleDateFormat sdf2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy",Locale.ENGLISH);
-		try {
-			date1 = sdf.parse(sDate1);
-			date1 = sdf2.parse(sdf2.format(date1));
-		} catch (ParseException ex) {
-			ex.printStackTrace();
-		}
-		Log.e("eor",String.valueOf(date1));
-		calendar.setTime(date1);
-		calendar.add(Calendar.DATE,PendingOil.getDays());
-		int compare = calendar.compareTo(calendar1);
-		if (compare==1)
-		{
-			calendar=calendar1;
-			Date v=calendar.getTime();
-			try {
 
-				v = sdf2.parse(sdf2.format(v));
-				Log.e("Do this phapp",v.toString());
+		///TODO fix this mess
 
-			} catch (ParseException ex) {
-				ex.printStackTrace();
-			}
+		PendingOil.real_update_due(predictor);
+		Log.e("testing",this.PendingOil.getDue().toString());
 
-			PendingOil.update_due(v);
-		}
-		else
-		{
-			Date v = calendar.getTime();
-			PendingOil.update_due(v);
-		}
+		PendingOil.updateStatus();
 
+
+		PendingMain.real_update_due(predictor);
+		Log.e("testing",this.PendingMain.getDue().toString());
+
+		PendingMain.updateStatus();
 		Calendar calendar2 = Calendar.getInstance();
-		if (calendar.compareTo(calendar2)==1)
-		{
-			if (type==1)
-			{
-				PendingOil.setStatus(0);
-			}
-		}
-		else
-		{
-			if (type==0 || type==3 || type==2)
-			{
-				PendingOil.setStatus(1);
-			}
-			else
-			{
-				PendingOil.setStatus(2);
-			}
-		}
-
-
-		Calendar calendar3 = predictor.predicted_by_odometer(PendingMain.getDistance()+odo);
-		String sDate2=PendingMain.date;
-		Date date2= null;
-		try {
-			date2 = sdf.parse(sDate2);
-			date2 = sdf2.parse(sdf2.format(date2));
-
-		} catch (ParseException ex) {
-			ex.printStackTrace();
-		}
-		calendar.setTime(date2);
-		calendar.add(Calendar.DATE,PendingMain.getDays());
-
-		if (calendar.compareTo(calendar3)==1)
-		{
-			calendar=calendar3;
-			Date v=calendar.getTime();
-			try {
-
-				v = sdf2.parse(sdf2.format(v));
-
-			} catch (ParseException ex) {
-				ex.printStackTrace();
-			}
-
-			PendingMain.update_due(v);
-		}
-		else
-		{
-			Date v = calendar3.getTime();
-			PendingMain.update_due(v);
-		}
-
-		if (calendar.compareTo(calendar2)==1)
-		{
-			if (type==2)
-			{
-				PendingMain.setStatus(0);
-			}
-		}
-		else
-		{
-			if (type==0 || type==3 || type==1)
-			{
-				PendingMain.setStatus(1);
-			}
-			else
-			{
-				PendingMain.setStatus(2);
-			}
-		}
 
 
 
@@ -167,7 +74,16 @@ public class EventList {
 		{
 			PendingOil.date=Utils.Date_to_String(calendar2.getTime());
 			PendingOil.odo=Utils.formatstring(Integer.toString(odo));
+			if (PendingOil.getStatus()==3)
+			{
+				PendingOil.setStatus(0);
+			}
+			else
+			{
+				PendingOil.setStatus(2);
+			}
 			this.list.add(0,PendingOil);
+			e.real_update_due(predictor);
 			PendingOil=e;
 		}
 		if (type==2)
@@ -175,6 +91,15 @@ public class EventList {
 			PendingMain.date=Utils.Date_to_String(calendar2.getTime());
 			PendingMain.odo=Utils.formatstring(Integer.toString(odo));
 			this.list.add(0,PendingMain);
+			e.real_update_due(predictor);
+			if (PendingMain.getStatus()==3)
+			{
+				PendingMain.setStatus(0);
+			}
+			else
+			{
+				PendingMain.setStatus(2);
+			}
 			PendingMain=e;
 		}
 
@@ -184,17 +109,23 @@ public class EventList {
 
 	public DateTest init_predict()
 	{
+		ArrayList<Event> listrev;
 		DateTest predictor = new DateTest();
-		Iterator<Event> it = list.iterator();
+		listrev = (ArrayList<Event>) list.clone();
+		Collections.reverse(listrev);
+		Iterator<Event> it = listrev.iterator();
 		while(it.hasNext()) {
 			Event element = it.next();
+
 			Map.Entry<Date,Integer>  a = element.Snap_date().next();
 
 			Date date = a.getKey();
 			Integer odo = a.getValue();
 
+
 			Calendar d = Calendar.getInstance();
 			d.setTime(date);
+			Log.e("2345",d.getTime().toString() + "\n" + odo.toString());
 			predictor.add_data(d,odo);
 		}
 		return predictor;

@@ -1,11 +1,19 @@
 package com.example.diary_oil_v3;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,6 +89,30 @@ public class SettingFragment extends Fragment {
         });
 
 
+        Intent intent = new Intent(this.getContext(), MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this.getContext(), 0, intent, 0);
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this.getContext(), MainActivity.CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_for_noti)
+                .setContentTitle("Time for oil change !!!")
+                .setContentText("Your bike need a oil change now")
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(getString(R.string.large_text)))
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
+                .setPriority(NotificationCompat.PRIORITY_HIGH);
+
+        Button noti_btn = view.findViewById(R.id.notiboi);
+        noti_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                    putnoti(mBuilder);
+            }
+        });
+
+
         return view;
     }
 
@@ -96,4 +128,15 @@ public class SettingFragment extends Fragment {
         editor.apply();
 
     }
+
+    private void putnoti(NotificationCompat.Builder a)
+    {
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this.getContext());
+        notificationManager.notify(1234, a.build());
+
+    }
+
+
+
+
 }

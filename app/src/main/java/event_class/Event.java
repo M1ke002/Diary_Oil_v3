@@ -1,11 +1,15 @@
 package event_class;
 
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.util.Pair;
 
+import com.example.diary_oil_v3.CameraVieActivity;
+import com.example.diary_oil_v3.MainActivity;
 import com.example.diary_oil_v3.R;
 
 import java.io.Serializable;
+import java.time.Duration;
 import java.time.LocalTime;
 
 import java.util.Calendar;
@@ -23,6 +27,7 @@ public class Event implements Serializable {
 	private int distance;
 	private int days;
 	private Calendar due;
+	public boolean DoantohonCong;
 
 	private String type;
 
@@ -112,10 +117,60 @@ public class Event implements Serializable {
 
 
 	public void update_due(Date date) {
+		Log.e("cum",date.toString());
 	this.due=DateTest.Cal_Create2(date);
 
-
 	}
+
+	public void real_update_due(DateTest predictor)
+	{
+		Log.e("12345 Predictor",predictor.toString());
+		Calendar today = Calendar.getInstance();
+		Date a = (Date) snapshot.keySet().toArray()[0];
+		today.setTime(a);
+		Calendar calendar1 = predictor.predicted_by_odometer(getDistance()+Integer.valueOf(odo));
+		today.add(Calendar.DATE,getDays());
+		Log.e("12345",getType());
+		Log.e("12345",getDistance()+Integer.valueOf(odo)+"\n"+ calendar1.getTime().toString());
+		Log.e("12345",a.toString()+"\n"+ today.getTime().toString());
+		today.set(Calendar.HOUR_OF_DAY, 0);
+		today.set(Calendar.MINUTE, 0);
+		today.set(Calendar.SECOND, 0);
+		today.set(Calendar.MILLISECOND,0);
+		calendar1.set(Calendar.HOUR_OF_DAY, 0);
+		calendar1.set(Calendar.MINUTE, 0);
+		calendar1.set(Calendar.SECOND, 0);
+		calendar1.set(Calendar.MILLISECOND,0);
+		long inct = Duration.between(today.toInstant(),calendar1.toInstant()).toDays();
+
+
+		if (inct>0)
+		{
+			this.due=(Calendar) today.clone();
+			this.DoantohonCong = true;
+		}
+		else
+		{
+			this.due=(Calendar) calendar1.clone();
+			this.DoantohonCong = false;
+		}
+		Log.e("cum",this.due.getTime().toString());
+	}
+
+	public void updateStatus()
+	{
+		Calendar today = Calendar.getInstance();
+		if (this.due.compareTo(today)==1)
+		{
+			this.status=3;
+		}
+		else
+		{
+			this.status=1;
+		}
+	}
+
+
 	public void clear_snap()
 	{
 		this.snapshot= new HashMap<Date, Integer>();
@@ -234,7 +289,13 @@ public class Event implements Serializable {
 	}
 
 	public Date getDue() {
+		Log.e("der",due.toString());
 		return due.getTime();
+	}
+
+	public Calendar getCalDue()
+	{
+		return  due;
 	}
 	public Calendar CalgetDue() {
 		return due;
