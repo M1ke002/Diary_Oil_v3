@@ -5,6 +5,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     tools:context=".HomeFragment"
+    android:fitsSystemWindows="true"
     android:background="@drawable/group_172">
 
     <!-- TODO: Update blank fragment layout -->
@@ -18,6 +19,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+               
+                android:src="@drawable/tapple"
+                />
 
             <TextView
 
@@ -34,7 +42,7 @@
                 android:text="@string/welcome_back"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display2"
                 android:textColor="@color/white"
-                android:textSize="25sp" />
+                android:textSize="25dp" />
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -128,7 +136,7 @@
                     android:letterSpacing="0.03"
                     android:text="12456"
                     android:textColor="@color/white"
-                    android:textSize="60sp"
+                    android:textSize="60dp"
                     app:layout_constraintBottom_toBottomOf="@+id/imageView5"
                     app:layout_constraintEnd_toEndOf="@+id/imageView4"
                     app:layout_constraintTop_toTopOf="@+id/imageView5" />
@@ -229,7 +237,7 @@
                     android:letterSpacing="0.03"
                     android:text="12456"
                     android:textColor="@color/white"
-                    android:textSize="60sp"
+                    android:textSize="60dp"
                     app:layout_constraintBottom_toBottomOf="@+id/imageView8"
                     app:layout_constraintEnd_toEndOf="@+id/imageView7"
                     app:layout_constraintTop_toTopOf="@+id/imageView8" />

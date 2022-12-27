@@ -74,7 +74,8 @@ public class EventList {
 		{
 			PendingOil.date=Utils.Date_to_String(calendar2.getTime());
 			PendingOil.odo=Utils.formatstring(Integer.toString(odo));
-			if (PendingOil.getStatus()==3)
+			Log.e("Vo ly",PendingOil.getStatusName());
+			if (PendingOil.getStatusNumber()==3)
 			{
 				PendingOil.setStatus(0);
 			}
@@ -82,6 +83,7 @@ public class EventList {
 			{
 				PendingOil.setStatus(2);
 			}
+			Log.e("Vo ly",PendingOil.getStatusName());
 			this.list.add(0,PendingOil);
 			e.real_update_due(predictor);
 			PendingOil=e;
@@ -90,9 +92,9 @@ public class EventList {
 		{
 			PendingMain.date=Utils.Date_to_String(calendar2.getTime());
 			PendingMain.odo=Utils.formatstring(Integer.toString(odo));
-			this.list.add(0,PendingMain);
-			e.real_update_due(predictor);
-			if (PendingMain.getStatus()==3)
+
+			Log.e("Vo ly 2",PendingMain.getStatusName());
+			if (PendingMain.getStatusNumber()==3)
 			{
 				PendingMain.setStatus(0);
 			}
@@ -100,6 +102,9 @@ public class EventList {
 			{
 				PendingMain.setStatus(2);
 			}
+			Log.e("Vo ly 2",PendingMain.getStatusName());
+			this.list.add(0,PendingMain);
+			e.real_update_due(predictor);
 			PendingMain=e;
 		}
 
@@ -116,11 +121,22 @@ public class EventList {
 		Iterator<Event> it = listrev.iterator();
 		while(it.hasNext()) {
 			Event element = it.next();
+			Date date = null;
+			try {
+				Log.e("???",element.date);
+				date = new SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH).parse(element.date);
 
-			Map.Entry<Date,Integer>  a = element.Snap_date().next();
+			} catch (ParseException e) {
+				e.printStackTrace();
+				Log.e("xxx","whyyyyyyyyyyyyyyyyyyyy");
+			}
 
-			Date date = a.getKey();
-			Integer odo = a.getValue();
+
+
+
+
+			Integer odo = Integer.valueOf(element.odo);
+
 
 
 			Calendar d = Calendar.getInstance();

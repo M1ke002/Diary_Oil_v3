@@ -52,6 +52,8 @@ dependencies {
     androidTestImplementation 'com.android.support.test:rules:1.0.2'
     androidTestImplementation 'com.google.truth:truth:1.0.1'
     implementation 'com.github.AnyChart:AnyChart-Android:1.1.2'
+    implementation 'androidx.preference:preference:1.1.1'
+    implementation 'com.takisoft.preferencex:preferencex:1.1.0'
 
 
     def cameraxVersion = "1.2.0-alpha03"

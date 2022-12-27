@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.preference.PreferenceManager;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
                 replaceFragment(new ProfileFragment());
                 break;
             case R.id.settings:
-                replaceFragment(new SettingFragment());
+                replaceFragment(new SettingsFragment());
                 break;
             case R.id.timeline:
                 replaceFragment(new TimelineFragment());
@@ -60,6 +61,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
+
+
+
+
 
     private void replaceFragment(Fragment fragment){
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -78,8 +84,7 @@ public class MainActivity extends AppCompatActivity {
             int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
             channel.setDescription(description);
-            // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
+
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }

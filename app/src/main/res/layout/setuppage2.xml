@@ -17,7 +17,7 @@
         android:gravity="center_horizontal"
         android:text="Step 2/4"
         android:textColor="@color/Theme"
-        android:textSize="45sp"
+        android:textSize="45dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,8 +30,7 @@
         android:layout_marginTop="156dp"
         android:fontFamily="@font/grgaref"
         android:gravity="center_horizontal"
-        android:text="Configure your vehicle
-"
+        android:text="Configure your vehicle"
         android:textColor="@color/Theme"
         android:textSize="25dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -43,14 +42,14 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="150dp"
+        android:layout_marginStart="47dp"
         android:gravity="center_horizontal"
         android:text="Distance for oil change (km)"
         android:textColor="@color/Theme_second"
         android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+
         app:layout_constraintHorizontal_bias="0.652"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -121,7 +120,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
 
-        android:layout_marginEnd="156dp"
+        android:layout_marginStart="47dp"
         android:layout_marginBottom="9dp"
         android:text="Distance for maintenance (km)"
         android:textAlignment="textStart"
@@ -129,7 +128,7 @@
         android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/editTextMaintenanceDis"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextOilChangeTime"
         app:layout_constraintVertical_bias="1.0" />
 

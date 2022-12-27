@@ -73,10 +73,24 @@ public class ItemDetailActivity extends AppCompatActivity {
         imageView.setImageResource(event.getStatus());
         if (event.getInttype()==0||event.getInttype()==3)
         {
-            tv5.setVisibility(View.INVISIBLE);
-            tv6.setVisibility(View.INVISIBLE);
-            tv4.setVisibility(View.INVISIBLE);
-            tv3.setVisibility(View.INVISIBLE);
+
+            if (event.getInttype()==3)
+            {
+                tv5.setText("Price (VND)");
+                tv3.setText(String.valueOf(event.cash)+ "VND");
+                tv6.setVisibility(View.VISIBLE);
+                tv6.setText("Price (VND) of each km:");
+                tv4.setVisibility(View.VISIBLE);
+                float c = event.cash/event.difference;
+                tv4.setText(String.valueOf( c) + "VND");
+            }
+            else
+            {
+                tv5.setVisibility(View.INVISIBLE);
+                tv6.setVisibility(View.INVISIBLE);
+                tv4.setVisibility(View.INVISIBLE);
+                tv3.setVisibility(View.INVISIBLE);
+            }
 
         }
         else
@@ -84,7 +98,7 @@ public class ItemDetailActivity extends AppCompatActivity {
             tv4.setText(Integer.toString(event.getDistance()));
             tv3.setText(Integer.toString(event.getDays()));
             textView2.setText(Utils.Date_to_String(event.getDue()));
-            textView.setText(Utils.Date_to_String(event.getDue()));
+            //textView.setText(Utils.Date_to_String(event.getDue()));
             textView2.setTextColor(getColor(event.getColor()));
             ds.setVisibility(View.INVISIBLE);
             os.setVisibility(View.INVISIBLE);

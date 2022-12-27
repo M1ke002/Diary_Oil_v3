@@ -28,7 +28,8 @@ public class Event implements Serializable {
 	private int days;
 	private Calendar due;
 	public boolean DoantohonCong;
-
+	public int cash;
+	public int difference;
 	private String type;
 
 	public int getResourceid() {
@@ -50,6 +51,7 @@ public class Event implements Serializable {
 	private Map<Date, Integer> snapshot;
 	public String odo;
 	public String date;
+	public String color_code;
 
 
 	public Event(int type, Date date, String odo) {
@@ -58,12 +60,14 @@ public class Event implements Serializable {
 			case 0:
 				typename = "Record";
 				this.resourceid = R.drawable.ic_baseline_photo_camera_24;
+				this.color_code = "#56D7BC";
 				this.status=0;
 				break;
 
 			case 1:
 				typename = "Oil Change";
 				this.resourceid = R.drawable.oil;
+				this.color_code = "#44CCFC";
 				this.status=3;
 				break;
 
@@ -71,11 +75,13 @@ public class Event implements Serializable {
 				typename = "Maintenance";
 				this.resourceid = R.drawable.main;
 				this.status=3;
-
+				this.color_code = "#BB86FC";
 				break;
 
 			case 3:
 				typename = "Fuel Change";
+
+				this.color_code = "#D75656";
 				this.resourceid = R.drawable.ic_baseline_local_gas_station_24;
 				this.status=0;
 				break;
@@ -160,6 +166,8 @@ public class Event implements Serializable {
 	public void updateStatus()
 	{
 		Calendar today = Calendar.getInstance();
+		Log.e("cum",this.due.getTime().toString());
+		Log.e("cum 2",today.getTime().toString());
 		if (this.due.compareTo(today)==1)
 		{
 			this.status=3;
@@ -168,6 +176,8 @@ public class Event implements Serializable {
 		{
 			this.status=1;
 		}
+
+		Log.e("cum 3", String.valueOf(this.status));
 	}
 
 
@@ -201,6 +211,10 @@ public class Event implements Serializable {
 	}
 
 
+	public int getStatusNumber()
+	{
+		return this.status;
+	}
 	public int getStatus() {
 		switch (this.status) {
 			case 0:

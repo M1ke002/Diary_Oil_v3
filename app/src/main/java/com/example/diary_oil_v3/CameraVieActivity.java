@@ -80,6 +80,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 
@@ -304,8 +305,20 @@ public class CameraVieActivity extends AppCompatActivity {
         imageView = (ImageView) findViewById(R.id.Minh);
         imageView.setImageBitmap(cropBitmap);
 */
+        try{
+            detect_moment();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            Toast toast =
+                    Toast.makeText(
+                            getApplicationContext(), "Classifier could not be initialized", Toast.LENGTH_SHORT);
+            toast.show();
+            popup_alert2();
 
-        detect_moment();
+        }
+
 
 
     }
@@ -386,10 +399,12 @@ public class CameraVieActivity extends AppCompatActivity {
             }
             Log.d("debug", res);
             //handleResult(croppedOdometer, resultsDigit); //display detected image on screen
+
         }
 
         return res;
     }
+
 
     public static final float MINIMUM_CONFIDENCE_TF_OD_API = 0.3f;
     private Bitmap croped;
@@ -528,6 +543,28 @@ public class CameraVieActivity extends AppCompatActivity {
 
         dialog.show();
     }
+    private int money;
+    private void money_input()
+    {
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle("Enter the petrol price for this time: ");
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_NUMBER);
+        input.setRawInputType(Configuration.KEYBOARD_12KEY);
+        alert.setView(input);
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                money=Integer.valueOf(input.getText().toString());
+                write_save_file(3);
+            }
+        });
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                //Put actions for CANCEL button here, or leave in blank
+            }
+        });
+        alert.show();
+    }
 
 
 
@@ -565,10 +602,19 @@ public class CameraVieActivity extends AppCompatActivity {
         }
         else
         {
-           write_save_file(a);
+            SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+            if (a==3 && sharedPreferences.getBoolean("fuel_lock",false))
+            {
+                differ = Integer.valueOf(odometer)-Integer.valueOf(old_odo);
+                money_input();
+            }
+            else
+            {write_save_file(a);}
         }
 
     }
+
+    private int differ;
 
     public void write_save_file(int a)
     {
@@ -606,6 +652,11 @@ public class CameraVieActivity extends AppCompatActivity {
             new_event.setDistance(dis);
             new_event.setDays(days);
         }
+        if (a==3)
+        {
+            new_event.cash=money;
+            new_event.difference=differ;
+        }
         Log.e("eor",new_event.odo);
         eventList.addEvent(new_event);
         Gson gson = new Gson();
@@ -621,20 +672,20 @@ public class CameraVieActivity extends AppCompatActivity {
 
     public EventList init_list()
     {
-        Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").create();;
+        Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").create();
 
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         String date = sharedPreferences.getString(LAST_RECORD_DATE,"");
         String odo = sharedPreferences.getString(LAST_RECORD_ODO,"");
         String json = sharedPreferences.getString(EVENT_LIST,"");
         String lo = sharedPreferences.getString(On_Boa3.LO,"");
-        if (lo=="")
+        if (Objects.equals(lo, ""))
         {
             lo=date;
 
         }
         String lm = sharedPreferences.getString(On_Boa3.LM,"");
-        if (lm=="")
+        if (Objects.equals(lm, ""))
         {
             lm=date;
 
@@ -700,7 +751,7 @@ public class CameraVieActivity extends AppCompatActivity {
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH);
         int day = cal.get(Calendar.DAY_OF_MONTH);
-        int style = AlertDialog.THEME_HOLO_LIGHT;
+        int style = AlertDialog.THEME_HOLO_DARK;
         datePickerDialog = new DatePickerDialog( this, style, dateSetListener , year , month , day);
         datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
 

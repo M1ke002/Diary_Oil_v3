@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+    <PreferenceCategory
+        android:title="User Information"
+        >
+        <EditTextPreference
+            android:title="User name"
+            android:summary="Change user name"
+            android:key="name"
+            />
+        <EditTextPreference
+            android:title="Vehicle name"
+            android:summary="Change vehicle name"
+            android:key="vehicle"
+            />
+
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Predictor settings">
+
+        <com.takisoft.preferencex.SwitchPreferenceCompat
+            android:title="Enable Fuel Consumption"
+            android:key="fuel_lock"
+            />
+        <Preference
+            android:title="Configure your vehicle"
+
+
+            />
+        <com.takisoft.preferencex.EditTextPreference
+            android:title="Time for Oil change (days)"
+            android:inputType="number"
+            android:summary="Max length for the next oil change"
+            android:key="oilchangetimeString"
+            />
+        <com.takisoft.preferencex.EditTextPreference
+            android:title="Distance for Oil change (km)"
+            android:inputType="number"
+            android:summary="Max distance for the next oil change"
+            android:key="oilchangedisString"
+            />
+        <com.takisoft.preferencex.EditTextPreference
+            android:title="Time for Maintenance (days)"
+            android:inputType="number"
+            android:summary="Max length for the next maintenance"
+            android:key="maintenancetimeString"
+            />
+        <com.takisoft.preferencex.EditTextPreference
+            android:title="Distance for Maintenance (km)"
+            android:inputType="number"
+            android:summary="Max distance for the next maintenance"
+            android:key="maintenancedisString"
+            />
+
+        <ListPreference
+            android:title="Number of Records use for predict"
+            android:entries="@array/Predict_count"
+            android:entryValues="@array/Predict_count"
+            android:summary="%s days"
+            android:defaultValue="All"
+            android:key="predict_preference"
+            >
+
+
+
+        </ListPreference>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Help"
+        >
+        <Preference
+            android:title="Github"
+            android:key="github"
+            />
+        <Preference
+            android:title="About us"
+            android:icon="@drawable/ic_baseline_info_24"
+            android:key="information"
+            />
+
+
+
+
+
+        <Preference
+            android:title="------"
+            android:key="testing_place"
+            />
+
+    </PreferenceCategory>
+
+
+
+
+</PreferenceScreen>

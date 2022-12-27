@@ -32,7 +32,7 @@
         android:fontFamily="@font/grgaref"
 
         android:text="Odometer detected: "
-        android:textSize="40dp"
+        android:textSize="30dp"
         android:textColor="@color/gray_dark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -161,6 +161,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:onClick="OpenDatePicker3"
+        android:visibility="invisible"
         />
 
     <LinearLayout
