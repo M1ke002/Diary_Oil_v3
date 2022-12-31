@@ -15,7 +15,7 @@
         android:text="Odo detected : "
         android:textSize="40dp"
         android:textColor="@color/gray_dark"
-         />
+        />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -23,7 +23,7 @@
         android:orientation="horizontal"
         android:layout_gravity="center">
 
-        <com.androidchils.odometer.Odometer
+        <com.example.diary_oil_v3.custom_odometer.Odometer
             android:layout_marginTop="30dp"
             android:id="@+id/odometer"
             android:layout_width="300dp"
@@ -37,7 +37,6 @@
             chils:np_slots="5"
             chils:np_textColor="@color/white"
             chils:np_textSize="35sp" />
-
 
 
 
