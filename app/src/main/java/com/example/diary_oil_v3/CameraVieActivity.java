@@ -57,7 +57,7 @@ import tflite.Classifier;
 import tflite.YoloV4Classifier;
 import tracking.MultiBoxTracker;
 
-import com.androidchils.odometer.Odometer;
+import com.example.diary_oil_v3.custom_odometer.Odometer;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -477,6 +477,7 @@ public class CameraVieActivity extends AppCompatActivity {
     private Odometer odo4;
     private void popup_dialog(String a)
     {
+        Log.d("debug","gayy: "+odometer);
         Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.confirm_dialog);
         dialog.setCanceledOnTouchOutside(true);
@@ -488,7 +489,7 @@ public class CameraVieActivity extends AppCompatActivity {
                 .textColor(ContextCompat.getColor(this, R.color.white))
                 .reading(odometer)
                 .slot(5)
-                .font(getString(com.androidchils.odometer.R.string.lato_regular))
+                .font(getString(R.string.lato_regular))
                 .background(ContextCompat.getColor(this, R.color.black), ContextCompat.getColor(this, R.color.black))
                 .build();
 
@@ -595,7 +596,10 @@ public class CameraVieActivity extends AppCompatActivity {
     public void save_data(int a)
     {
         odometer = odo4.getFinalOdometerValue();
+        Log.d("debug","gay: " + odometer);
         odometer = Utils.formatstring( odometer.replaceAll("\\s+",""));
+        Log.d("debug","gay: " + odometer);
+        if (old_odo == null) old_odo = "0";
         if (Integer.valueOf(old_odo)>Integer.valueOf(odometer))
         {
             alert_check(a);

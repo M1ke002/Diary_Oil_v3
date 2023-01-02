@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr format="reference" name="numberPickerStyle"/>
+    <color name="centerColor">#000000</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="color_transparent">@android:color/transparent</color>
+    <color name="endColor">#969696</color>
+    <color name="odo_bg_color">#565656</color>
+    <color name="odo_text_color">#e2e2e2</color>
+    <color name="startColor">#969696</color>
+    <declare-styleable name="NumberPicker">
+        <attr format="dimension" name="np_width"/>
+        <attr format="dimension" name="np_height"/>
+        <attr format="color" name="np_dividerColor"/>
+        <attr format="dimension" name="np_dividerDistance"/>
+        <attr format="dimension" name="np_dividerThickness"/>
+        <attr format="string" name="np_formatter"/>
+        <attr format="integer" name="np_max"/>
+        <attr format="integer" name="np_min"/>
+        <attr format="enum" name="np_orientation">
+            <enum name="horizontal" value="0"/>
+            <enum name="vertical" value="1"/>
+        </attr>
+        <attr format="color" name="np_selectedTextColor"/>
+        <attr format="color" name="np_text_color"/>
+        <attr format="dimension" name="np_text_size"/>
+        <attr format="string" name="np_typeface"/>
+        <attr format="integer" name="np_value"/>
+        <attr format="integer" name="np_wheelItemCount"/>
+        <attr format="boolean" name="np_wrapSelectorWheel"/>
+    </declare-styleable>
+    <declare-styleable name="Odometer">
+        <attr format="dimension" name="np_textSize"/>
+        <attr format="string" name="np_font"/>
+        <attr format="reference|color" name="np_background"/>
+        <attr format="color" name="np_edgeColor"/>
+        <attr format="color" name="np_centerColor"/>
+        <attr format="color" name="np_textColor"/>
+        <attr format="integer" name="np_slots"/>
+        <attr format="string" name="np_reading"/>
+    </declare-styleable>
+    <string name="lato_black">Lato-Black.ttf</string>
+    <string name="lato_blackitalic">Lato-BlackItalic.ttf</string>
+    <string name="lato_bold">Lato-Bold.ttf</string>
+    <string name="lato_hairline">Lato-Hairline.ttf</string>
+    <string name="lato_light">Lato-Light.ttf</string>
+    <string name="lato_regular">Lato-Regular.ttf</string>
+</resources>
