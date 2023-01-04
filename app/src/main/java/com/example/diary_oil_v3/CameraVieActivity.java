@@ -326,6 +326,7 @@ public class CameraVieActivity extends AppCompatActivity {
     private void detect_moment()
     { //detect btn for image
         Handler handler = new Handler();
+        snap.setEnabled(false);
 
         new Thread(() -> { //START HERE
             final List<Classifier.Recognition> results = detector.recognizeImage(cropBitmap); //get detection results
@@ -339,6 +340,7 @@ public class CameraVieActivity extends AppCompatActivity {
 
                     //display number on screen
 //                      handleResult(cropBitmap, results);\
+
                     if (odo == "")
                     {
                         Toast.makeText(CameraVieActivity.this, "Error at detect, pls take another picture \n"+"Detect "+digits, Toast.LENGTH_SHORT).show();
@@ -350,6 +352,7 @@ public class CameraVieActivity extends AppCompatActivity {
                         //popup_alert();
                         popup_dialog("Odometer Detected:");
                     }
+                    snap.setEnabled(true);
                 }
             });
 
@@ -370,7 +373,7 @@ public class CameraVieActivity extends AppCompatActivity {
             if (result.getTitle().equals("odometer")) {
                 isOdometerDetected = true;
                 odometerCoors = result.getLocation();
-                //Toast.makeText(CameraVieActivity.this, "Pissing" , Toast.LENGTH_SHORT).show();
+
                 break;
             }
         }
@@ -432,6 +435,7 @@ public class CameraVieActivity extends AppCompatActivity {
 
     private void popup_alert()
     {
+
         AlertDialog.Builder builder = new AlertDialog.Builder(CameraVieActivity.this);
         builder.setCancelable(true);
         builder.setTitle("Enter new Odo ");
@@ -466,7 +470,7 @@ public class CameraVieActivity extends AppCompatActivity {
     private void popup_alert2()
     {
         SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.SHARED_PREFS, MODE_PRIVATE);
-        String o1 = sharedPreferences.getString(CameraVieActivity.LAST_RECORD_ODO,"");
+        String o1 = sharedPreferences.getString(CameraVieActivity.LAST_RECORD_ODO,"0");
         odometer = Utils.formatstring(o1);
         old_odo=odometer;
         popup_dialog("Input New Odometer");
@@ -477,10 +481,12 @@ public class CameraVieActivity extends AppCompatActivity {
     private Odometer odo4;
     private void popup_dialog(String a)
     {
+
         Log.d("debug","gayy: "+odometer);
         Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.confirm_dialog);
         dialog.setCanceledOnTouchOutside(true);
+        Log.e("Odometer",odometer);
         LinearLayout odo2 = (LinearLayout) dialog.findViewById(R.id.odometer);
 
 
@@ -494,8 +500,15 @@ public class CameraVieActivity extends AppCompatActivity {
                 .build();
 
 
-
-        odo2.addView(odo4);
+        if  (Utils.formatstring( odo4.getFinalOdometerValue().replaceAll("\\s+",""))==null)
+        {
+            Log.e("why",odometer);
+            TextView tv = new TextView(this.getApplicationContext());
+            tv.setText(odometer);
+            odo2.addView(tv);
+        }
+        else
+        {odo2.addView(odo4);}
 
 
         TextView odo = (TextView) dialog.findViewById(R.id.textView5);
@@ -595,8 +608,20 @@ public class CameraVieActivity extends AppCompatActivity {
 
     public void save_data(int a)
     {
+
         odometer = odo4.getFinalOdometerValue();
         Log.d("debug","gay: " + odometer);
+
+        if  (odo4.getFinalOdometerValue()!=null)
+        {
+            odometer=odo4.getFinalOdometerValue();
+        }
+        Log.e("null","odometer "+ odometer +"\n" + old_odo);
+        if (old_odo==null)
+        {
+            old_odo="0";
+        }
+
         odometer = Utils.formatstring( odometer.replaceAll("\\s+",""));
         Log.d("debug","gay: " + odometer);
         if (old_odo == null) old_odo = "0";
@@ -662,7 +687,8 @@ public class CameraVieActivity extends AppCompatActivity {
             new_event.difference=differ;
         }
         Log.e("eor",new_event.odo);
-        eventList.addEvent(new_event);
+        int c = Utils.predictor_to_int(sharedPreferences.getString("predict_preference","All"));
+        eventList.addEvent(new_event,c);
         Gson gson = new Gson();
         String json = gson.toJson(eventList);
 

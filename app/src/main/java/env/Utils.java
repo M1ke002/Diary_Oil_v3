@@ -298,5 +298,15 @@ public class Utils {
         return v;
     }
 
+    public static int predictor_to_int(String s)
+    {
+        int c=100000;
+        if (!s.equals("All"))
+        {
+            c=Integer.parseInt(s);
+        }
+        return c;
+    }
+
 }
 
