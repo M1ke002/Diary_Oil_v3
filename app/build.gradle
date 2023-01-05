@@ -44,7 +44,9 @@ dependencies {
     implementation 'org.tensorflow:tensorflow-lite-gpu:2.2.0'
 
     //slower inference, bigger apk size
+
     //implementation 'org.tensorflow:tensorflow-lite-select-tf-ops:2.3.0'
+
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
