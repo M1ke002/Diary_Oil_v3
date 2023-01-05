@@ -5,8 +5,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.camera.core.CameraSelector;
+import androidx.camera.core.ImageAnalysis;
 import androidx.camera.core.ImageCapture;
 import androidx.camera.core.ImageCaptureException;
+import androidx.camera.core.ImageProxy;
 import androidx.camera.core.Preview;
 import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.camera.view.PreviewView;
@@ -14,6 +16,7 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LifecycleOwner;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -30,6 +33,7 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -38,15 +42,21 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.text.InputType;
 import android.util.Log;
+import android.util.Size;
+import android.view.Surface;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import env.BitmapUtils;
 import env.ImageUtils;
 import env.Logger;
 import env.Utils;
@@ -87,7 +97,9 @@ import java.util.concurrent.Executor;
 
 public class CameraVieActivity extends AppCompatActivity {
 
- 
+    private ArrayList<String> detectedDigits = new ArrayList<>();
+    private static final int NUM_CORRECT_DETECTIONS = 2;
+    private boolean isRealTimeDetecting = false;
     private Date date;
 
     private ListenableFuture<ProcessCameraProvider> cameraProviderListenableFuture;
@@ -96,6 +108,7 @@ public class CameraVieActivity extends AppCompatActivity {
 
     private PreviewView previewView;
     private ImageCapture imageCapture;
+    private Switch toggleAutoDetect;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,12 +125,14 @@ public class CameraVieActivity extends AppCompatActivity {
         snap = (Button) findViewById(R.id.snapview);
         input_btn =  findViewById(R.id.input_button);
         previewView = (PreviewView) findViewById(R.id.previewview);
+        toggleAutoDetect = (Switch) findViewById(R.id.switch1);
 
         cameraProviderListenableFuture = ProcessCameraProvider.getInstance(this);
         cameraProviderListenableFuture.addListener(() -> {
             try {
                 ProcessCameraProvider cameraProvider = cameraProviderListenableFuture.get();
-                startCameraX(cameraProvider);
+//                startCameraX(cameraProvider);
+                startCameraX2(cameraProvider);
             } catch (ExecutionException | InterruptedException e) {
                 e.printStackTrace();
             }
@@ -138,6 +153,19 @@ public class CameraVieActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 popup_alert2();
+            }
+        });
+
+        toggleAutoDetect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if (isChecked) {
+                    isRealTimeDetecting = true;
+                    snap.setEnabled(false);
+                } else {
+                    isRealTimeDetecting = false;
+                    snap.setEnabled(true);
+                }
             }
         });
     }
@@ -203,6 +231,26 @@ public class CameraVieActivity extends AppCompatActivity {
 
     }
 
+    boolean checkValidDigits(String digits) {
+        String checkedDigits = digits_check(digits);
+        if (checkedDigits.length() != 5) return false;
+        detectedDigits.add(checkedDigits);
+        //check if we detected 2 times correctly
+        if (detectedDigits.size() == NUM_CORRECT_DETECTIONS) {
+            for (int i = 1; i < detectedDigits.size(); i++) {
+                //if all strings not equal -> check again
+                if (!detectedDigits.get(i).equals(detectedDigits.get(0))) {
+                    detectedDigits.clear();
+                    return false;
+                }
+            }
+            //if all strings equal -> detected digits are probably correct
+            detectedDigits.clear();
+            return true;
+        }
+        return false;
+    }
+
     private void startCameraX(ProcessCameraProvider cameraProvider) {
         cameraProvider.unbindAll();
         CameraSelector cameraSelector = new CameraSelector.Builder()
@@ -217,6 +265,71 @@ public class CameraVieActivity extends AppCompatActivity {
                 .build();
 
         cameraProvider.bindToLifecycle((LifecycleOwner) this,cameraSelector,preview, imageCapture);
+
+    }
+
+    @SuppressLint("UnsafeOptInUsageError")
+    private void startCameraX2(ProcessCameraProvider cameraProvider) {
+        cameraProvider.unbindAll();
+        CameraSelector cameraSelector = new CameraSelector.Builder()
+                .requireLensFacing(CameraSelector.LENS_FACING_BACK)
+                .build();
+        Preview preview = new Preview.Builder().setTargetRotation(Surface.ROTATION_90).build();
+
+        preview.setSurfaceProvider(previewView.getSurfaceProvider());
+
+        imageCapture = new ImageCapture.Builder()
+                .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
+                .build();
+
+        ImageAnalysis imageAnalysis = new ImageAnalysis.Builder()
+                .setTargetResolution(new Size(720, 1280))
+                .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                .setOutputImageFormat(ImageAnalysis.OUTPUT_IMAGE_FORMAT_YUV_420_888)
+                .build();
+
+        imageAnalysis.setAnalyzer(ContextCompat.getMainExecutor(this), new ImageAnalysis.Analyzer() {
+            @Override
+            public void analyze(@NonNull ImageProxy imageProxy) {
+                if (!isRealTimeDetecting) {
+                    imageProxy.close();
+                    return;
+                }
+
+                Image image = imageProxy.getImage();
+                if (image != null) {
+                    Bitmap bitmap = null;
+                    try {
+//                        bitmap = toBitmap(image);
+                        bitmap = BitmapUtils.getBitmap(imageProxy);
+                    } catch (Exception e) {
+
+                    }
+                    Log.d("bitmap converted",""+ bitmap.getHeight() +" "+ bitmap.getWidth());
+                    sourceBitmap = bitmap;
+                    if (Utils.checkRotate(sourceBitmap))
+                        sourceBitmap = Utils.rotateBitmap(sourceBitmap, 90);
+                    cropBitmap = Bitmap.createScaledBitmap(sourceBitmap, TF_OD_API_INPUT_SIZE, TF_OD_API_INPUT_SIZE, true);
+                    cropBitmap = Utils.processBitmap(sourceBitmap,TF_OD_API_INPUT_SIZE);
+                    Log.d("bitmap cropped",""+ cropBitmap.getHeight() +" "+ cropBitmap.getWidth());
+//
+                    try{
+                        detect_moment(imageProxy);
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                        Toast toast =
+                                Toast.makeText(
+                                        getApplicationContext(), "Classifier could not be initialized", Toast.LENGTH_SHORT);
+                        toast.show();
+                        popup_alert2();
+                    }
+                }
+            }
+        });
+
+        cameraProvider.bindToLifecycle((LifecycleOwner) this,cameraSelector,imageAnalysis,preview,imageCapture);
 
     }
 
@@ -306,7 +419,7 @@ public class CameraVieActivity extends AppCompatActivity {
         imageView.setImageBitmap(cropBitmap);
 */
         try{
-            detect_moment();
+            detect_moment(null);
         }
         catch (Exception e)
         {
@@ -323,8 +436,14 @@ public class CameraVieActivity extends AppCompatActivity {
 
     }
 
-    private void detect_moment()
+    //if imageProxy is passed in -> using real time detection mode
+    private void detect_moment(ImageProxy imageProxy)
     { //detect btn for image
+        if (imageProxy != null && !isRealTimeDetecting) {
+            imageProxy.close();
+            return;
+        }
+
         Handler handler = new Handler();
 
         new Thread(() -> { //START HERE
@@ -337,17 +456,28 @@ public class CameraVieActivity extends AppCompatActivity {
                 public void run() {
                     String odo = digits_check(digits);
 
+                    //when done
+                    if (imageProxy != null) imageProxy.close();
+
                     //display number on screen
 //                      handleResult(cropBitmap, results);\
                     if (odo == "")
                     {
-                        Toast.makeText(CameraVieActivity.this, "Error at detect, pls take another picture \n"+"Detect "+digits, Toast.LENGTH_SHORT).show();
+                        if (imageProxy != null) Log.d("error detect","Detect "+digits);
+                        else
+                            Toast.makeText(CameraVieActivity.this, "Error at detect, pls take another picture \n"+"Detect "+digits, Toast.LENGTH_SHORT).show();
 
                     }
                     else
                     {
+//                        Toast.makeText(CameraVieActivity.this, "Detect "+digits, Toast.LENGTH_SHORT).show();
+                        if (imageProxy != null) {
+                            boolean res = checkValidDigits(digits);
+                            if (!res) return;
+                        }
                         odometer = odo;
-                        //popup_alert();
+                        isRealTimeDetecting = false;
+//                        popup_alert();
                         popup_dialog("Odometer Detected:");
                     }
                 }
@@ -477,7 +607,6 @@ public class CameraVieActivity extends AppCompatActivity {
     private Odometer odo4;
     private void popup_dialog(String a)
     {
-        Log.d("debug","gayy: "+odometer);
         Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.confirm_dialog);
         dialog.setCanceledOnTouchOutside(true);
@@ -532,6 +661,7 @@ public class CameraVieActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 dialog.cancel();
+                isRealTimeDetecting = true;
             }
         });
 
@@ -596,9 +726,7 @@ public class CameraVieActivity extends AppCompatActivity {
     public void save_data(int a)
     {
         odometer = odo4.getFinalOdometerValue();
-        Log.d("debug","gay: " + odometer);
         odometer = Utils.formatstring( odometer.replaceAll("\\s+",""));
-        Log.d("debug","gay: " + odometer);
         if (old_odo == null) old_odo = "0";
         if (Integer.valueOf(old_odo)>Integer.valueOf(odometer))
         {
