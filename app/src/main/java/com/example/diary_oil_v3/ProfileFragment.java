@@ -69,7 +69,10 @@ public class ProfileFragment extends Fragment {
         List<Event> dateset = getlistuser();
         Collections.reverse(dateset);
         Iterator<Event> it = dateset.iterator();
-        while(it.hasNext()) {
+        int n=10;
+        int i =0;
+        while(it.hasNext() && i<n) {
+            i++;
             Event element = it.next();
 
 

@@ -2,6 +2,7 @@ package com.example.diary_oil_v3;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -24,7 +25,7 @@ import env.Utils;
 import event_class.Event;
 
 public class ItemDetailActivity extends AppCompatActivity {
-
+    public static final String SHARED_PREFS = "sharedPrefs";
     private TextView tv1,tv2,ds,os;
     private TextView tv3,tv4,tv5,tv6;
     private LinearLayout frameLayout;
@@ -76,13 +77,15 @@ public class ItemDetailActivity extends AppCompatActivity {
 
             if (event.getInttype()==3)
             {
-                tv5.setText("Price (VND)");
-                tv3.setText(String.valueOf(event.cash)+ "VND");
+                SharedPreferences sharedPreferences= getSharedPreferences(SHARED_PREFS,MODE_PRIVATE);
+                String current = sharedPreferences.getString("currency-unit","VND");
+                tv5.setText("Price in "+current);
+                tv3.setText(String.valueOf(event.cash)+ current);
                 tv6.setVisibility(View.VISIBLE);
-                tv6.setText("Price (VND) of each km:");
+                tv6.setText("Price of each km:");
                 tv4.setVisibility(View.VISIBLE);
                 float c = event.cash/event.difference;
-                tv4.setText(String.valueOf( c) + "VND");
+                tv4.setText(String.valueOf( c) + current);
             }
             else
             {

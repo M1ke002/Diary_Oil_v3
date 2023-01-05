@@ -33,7 +33,7 @@ public class EventList {
 
 	}
 
-	public void addEvent(Event e){
+	public void addEvent(Event e,int c){
 		int type = e.getInttype();
 		Iterator<Map.Entry<Date,Integer>> snap = e.Snap_date();
 		Map.Entry<Date,Integer> vf = snap.next();
@@ -42,7 +42,7 @@ public class EventList {
 		PendingOil.newSnapshot(date,odo);
 		PendingMain.newSnapshot(date,odo);
 
-		DateTest predictor = init_predict();
+		DateTest predictor = init_predict(c);
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
 		predictor.add_data(calendar,odo);
@@ -112,14 +112,17 @@ public class EventList {
 		//
 	}
 
-	public DateTest init_predict()
+	public DateTest init_predict(int n)
 	{
+		Log.e("init",String.valueOf(n));
 		ArrayList<Event> listrev;
 		DateTest predictor = new DateTest();
 		listrev = (ArrayList<Event>) list.clone();
 		Collections.reverse(listrev);
+		int i = 0;
 		Iterator<Event> it = listrev.iterator();
-		while(it.hasNext()) {
+		while(it.hasNext() && i<n) {
+			i++;
 			Event element = it.next();
 			Date date = null;
 			try {

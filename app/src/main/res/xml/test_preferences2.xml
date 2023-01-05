@@ -2,22 +2,7 @@
 <PreferenceScreen  xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
     android:layout_width="match_parent">
-    <PreferenceCategory
-        android:title="User Information"
-        >
-        <EditTextPreference
-            android:title="User name"
-            android:summary="Change user name"
-            android:key="name"
-            />
-        <EditTextPreference
-            android:title="Vehicle name"
-            android:summary="Change vehicle name"
-            android:key="vehicle"
-            />
 
-
-    </PreferenceCategory>
 
     <PreferenceCategory
         android:title="Predictor settings">
@@ -26,11 +11,7 @@
             android:title="Enable Fuel Consumption"
             android:key="fuel_lock"
             />
-        <Preference
-            android:title="Configure your vehicle"
 
-
-            />
         <com.takisoft.preferencex.EditTextPreference
             android:title="Time for Oil change (days)"
             android:inputType="number"
@@ -69,14 +50,42 @@
 
         </ListPreference>
     </PreferenceCategory>
+    <PreferenceCategory android:title="Notification"
+        android:shouldDisableView="false"
+        android:enabled="false">
+        <com.takisoft.preferencex.SwitchPreferenceCompat
+            android:title="Enable Notification"
+            android:shouldDisableView="false"
+            android:enabled="false"
+            />
+
+
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="Unit"
+        >
+        <EditTextPreference
+            android:title="Change currency unit"
+            android:defaultValue="VND"
+
+
+            android:key="currency-unit"
+            />
+        <EditTextPreference
+            android:title="Change distance unit"
+            android:defaultValue="km"
+
+            android:key="distance-unit"
+            />
+
+
+    </PreferenceCategory>
+
 
     <PreferenceCategory
         android:title="Help"
         >
-        <Preference
-            android:title="Github"
-            android:key="github"
-            />
+
         <Preference
             android:title="About us"
             android:icon="@drawable/ic_baseline_info_24"

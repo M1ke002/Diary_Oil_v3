@@ -115,7 +115,8 @@ public class HomeFragment extends Fragment {
             welcome.setText("Welcome back, " + name);
 
             EventList eventList = init_list();
-            DateTest predictor = eventList.init_predict();
+
+            DateTest predictor = eventList.init_predict(Utils.predictor_to_int(sharedPreferences.getString("predict_preference","All")));
 
 
             Calendar calendar = Calendar.getInstance();
@@ -177,8 +178,6 @@ public class HomeFragment extends Fragment {
     private void onClickGoToDetail(Event event) {
         Intent intent = new Intent(this.getContext(),ItemDetailActivity.class);
         Bundle bundle = new Bundle();
-        // TODO: remove this
-
         bundle.putSerializable("Object_item",event);
         intent.putExtras(bundle);
         this.getContext().startActivity(intent);
